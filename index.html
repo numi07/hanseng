@@ -120,37 +120,41 @@
         }
     </style>
 </head>
-<body class="p-3 md:p-6 text-xs font-sans">
+<body class="p-3 md:p-6 text-xs font-sans relative">
+
+    <!-- Logout Button Container (Top Right) -->
+    <div id="logoutPositioner" class="absolute top-4 right-4 z-[100]"></div>
 
     <div class="max-w-[1650px] mx-auto space-y-6 relative z-10">
         
-        <div class="glass-card rounded-2xl p-5 text-center relative flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="md:text-left">
-                <h1 class="text-2xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500 uppercase">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
-                <p class="text-slate-400 font-medium text-[11px] tracking-wide">Plot No: 49 & 50, Mongla EPZ, Mongla(9351), Bagerhat, Khulna, Bangladesh.</p>
+        <!-- Header Section Updated: Centered Org Name & Centered Buttons -->
+        <div class="glass-card rounded-2xl p-6 text-center relative flex flex-col items-center gap-6">
+            <div class="text-center">
+                <h1 class="text-3xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500 uppercase">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
+                <p class="text-slate-400 font-medium text-[12px] tracking-wide mt-1">Plot No: 49 & 50, Mongla EPZ, Mongla(9351), Bagerhat, Khulna, Bangladesh.</p>
+                <div class="mt-2 text-slate-500 font-bold text-sm">
+                    <span id="liveTime">00:00:00 AM</span> | <span id="liveDateDisplay">Wednesday, 20 May, 2026</span>
+                </div>
             </div>
-            <div class="flex flex-wrap gap-3">
-                <button onclick="openDashboardModal()" class="bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-slate-200 hover:text-white border border-slate-600 font-bold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
+            
+            <div class="flex flex-wrap justify-center gap-4 bg-slate-900/40 p-4 rounded-2xl border border-slate-700/50 shadow-inner">
+                <button onclick="openDashboardModal()" class="bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-slate-200 hover:text-white border border-slate-600 font-bold px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
                     📊 Stock Dashboard
                 </button>
-                <button onclick="openLcSummaryModal()" class="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
+                <button onclick="openLcSummaryModal()" class="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
                     🔍 View LC Summary
                 </button>
-                <button onclick="openBondRegisterModal()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
+                <button onclick="openBondRegisterModal()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
                     📖 Bond Register
                 </button>
-            </div>
-            <div class="text-right hidden md:block">
-                <p class="text-slate-300 font-bold text-sm tracking-wide"><span id="liveTime">00:00:00 AM</span></p>
-                <p class="text-[10px] text-slate-500 font-medium" id="liveDateDisplay">Wednesday, 20 May, 2026</p>
             </div>
         </div>
 
         <div class="glass-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 relative z-[100]">
-            <div id="itemTabs" class="flex flex-wrap gap-2">
-                </div>
+            <div id="itemTabs" class="flex flex-wrap gap-2 items-center">
+                <!-- Items and Add Item button will render here -->
+            </div>
             <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                <!-- Updated Global Search Bar (Fixed Z-index issue) -->
                 <div class="relative w-full sm:w-64">
                     <input type="text" id="searchBar" oninput="handleGlobalSearch()" placeholder="Global Search B/E No / Truck No / LC..." class="w-full bg-slate-900/60 text-slate-200 border border-slate-700 rounded-xl pl-3 pr-8 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-500">
                     <span class="absolute right-2.5 top-2 text-slate-500">🔍</span>
@@ -342,7 +346,8 @@
                             <th class="p-2.5 border-r border-slate-800 text-orange-400">Export (Weight)</th>
                             <th class="p-2.5 border-r border-slate-800 text-emerald-400">Available (Pkt)</th>
                             <th class="p-2.5 border-r border-slate-800 text-emerald-400">Available (Roll)</th>
-                            <th class="p-2.5 text-emerald-400">Available (Weight)</th>
+                            <th class="p-2.5 border-r border-slate-800 text-emerald-400">Available (Weight)</th>
+                            <th class="p-2.5 text-indigo-400 font-bold">Bond Reg. Balance</th>
                         </tr>
                     </thead>
                     <tbody id="lcSummaryBody" class="font-semibold">
@@ -354,7 +359,7 @@
         </div>
     </div>
 
-    <!-- NEW BOND REGISTER MODAL (z-[60] to ensure edit modals open on top) -->
+    <!-- NEW BOND REGISTER MODAL -->
     <div id="bondRegisterModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden flex items-center justify-center p-4 z-[60]">
         <div class="glass-modal max-w-[1650px] w-full h-[90vh] rounded-2xl shadow-2xl border border-slate-800 flex flex-col overflow-hidden">
             <div class="px-5 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-950/60 shrink-0">
@@ -368,7 +373,7 @@
                 <div class="flex items-center gap-3">
                     <select id="bondItemFilter" onchange="updateBondBeDropdown()" class="bg-slate-900 border border-slate-700 text-teal-400 rounded-xl px-3 py-1.5 font-bold focus:outline-none text-xs"></select>
                     <select id="bondBeFilter" onchange="renderBondRegisterTable()" class="bg-slate-900 border border-slate-700 text-teal-400 rounded-xl px-3 py-1.5 font-bold focus:outline-none text-xs"></select>
-                    <button onclick="openExportModalFromBond()" class="bg-orange-500 hover:bg-orange-400 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition">➕ Add Export</button>
+                    <button onclick="openManualBondExportModal()" class="bg-orange-500 hover:bg-orange-400 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition">➕ Add Manual Bond Export</button>
                     <button onclick="printBondRegister()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition">🖨️ Print View</button>
                     <button onclick="closeModal('bondRegisterModal')" class="bg-slate-900 text-slate-400 hover:text-white border border-slate-700 hover:bg-red-600 px-3 py-1.5 rounded-xl text-xs font-bold transition">❌ Close</button>
                 </div>
@@ -559,28 +564,81 @@
                         <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Truck Rent Description</label>
                         <input type="text" id="expRent" required class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none" placeholder="e.g., 18,000 / LC 95">
                     </div>
-                    
-                    <!-- NEW BOND EXPORT FIELDS -->
-                    <div class="col-span-2 mt-2 pt-2 border-t border-slate-800">
-                       <span class="font-bold text-indigo-400 text-[10px] uppercase tracking-wider mb-2 block">📖 Bond Register Additional Info (Optional)</span>
-                       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                           <input type="text" id="expBeExpNo" placeholder="Bill of Export No" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="date" id="expBeExpDate" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="text" id="expExpLcNo" placeholder="Export LC No" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="date" id="expExpLcDate" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="text" id="expInvNo" placeholder="Invoice No" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="date" id="expInvDate" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="text" id="expItemNameBond" placeholder="Exp Item Name" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="text" id="expExpNo" placeholder="EXP No" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="date" id="expExpDate2" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="text" id="expPermitNo" placeholder="Export Permit No" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                           <input type="date" id="expPermitDate" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] focus:border-indigo-500 focus:outline-none">
-                       </div>
-                   </div>
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-800 mt-2">
                     <button type="button" onclick="closeModal('exportModal')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 px-4 py-2 rounded-xl font-bold">Cancel</button>
-                    <button type="submit" class="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-xl font-bold">Confirm & Deduct</button>
+                    <button type="submit" class="bg-orange-600 hover:bg-orange-400 text-white px-4 py-2 rounded-xl font-bold">Confirm & Deduct Stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MANUAL BOND EXPORT MODAL -->
+    <div id="bondExportModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4 z-[80]">
+        <div class="bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-800">
+            <div class="bg-indigo-600 text-white px-4 py-3 font-bold text-xs flex justify-between items-center uppercase tracking-wider">
+                <span id="bondExportModalTitle">Manual Bond Register Deduction</span>
+                <button onclick="closeModal('bondExportModal')" class="text-slate-200 hover:text-white text-lg">&times;</button>
+            </div>
+            <form id="bondExportForm" onsubmit="saveBondManualExport(event)" class="p-5 space-y-3 max-h-[85vh] overflow-y-auto custom-scroll">
+                <input type="hidden" id="editBondExpId">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="col-span-2">
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Export Date</label>
+                        <input type="date" id="bExpDate" required class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Bill of Export No</label>
+                        <input type="text" id="bExpBeNo" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">B/Export Date</label>
+                        <input type="date" id="bExpBeDate" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Export LC No</label>
+                        <input type="text" id="bExpLcNo" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Export LC Date</label>
+                        <input type="date" id="bExpLcDate" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Invoice No</label>
+                        <input type="text" id="bExpInvNo" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Invoice Date</label>
+                        <input type="date" id="bExpInvDate" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Export Item Name</label>
+                        <input type="text" id="bExpItemName" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">EXP No</label>
+                        <input type="text" id="bExpExpNo" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">EXP Date</label>
+                        <input type="date" id="bExpExpDate" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Permit No</label>
+                        <input type="text" id="bExpPermitNo" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Permit Date</label>
+                        <input type="date" id="bExpPermitDate" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Total Export Weight (KG)</label>
+                        <input type="number" step="0.01" id="bExpWeight" required class="w-full bg-slate-950 font-bold border border-slate-700 focus:border-indigo-500 rounded-lg px-2.5 py-1.5 text-indigo-400 text-xs focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2 border-t border-slate-800 mt-2">
+                    <button type="button" onclick="closeModal('bondExportModal')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 px-4 py-2 rounded-xl font-bold">Cancel</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl font-bold">Save Bond Entry</button>
                 </div>
             </form>
         </div>
@@ -603,10 +661,8 @@
                 {
                     id: "imp_1", sl: 1, inBond: "01-03-2026", beNo: "C 806052", beDate: "20-02-2026", bank: "Jamuna", lc: "11", ipNo: "IC1802260002", ipDate: "18-02-2026",
                     specs: [{ gsm: 172, size: "20 × 30", sheet: 100, pkt: 8000, roll: 2, weight: 52800.00 }],
-                    exports: [
-                        { id: "exp_1", date: "2026-03-05", truck: "KMT 11-1997", gsm: 172, size: "20 × 30", sheet: 100, pkt: 1874, ppw: 6.658, weight: 12477.09, rent: "18,000", beExpNo: "C 201", beExpDate: "01-03-2026" },
-                        { id: "exp_2", date: "2026-03-07", truck: "DMT 13-0938", gsm: 172, size: "20 × 30", sheet: 100, pkt: 1800, ppw: 6.658, weight: 11984.44, rent: "17,000" }
-                    ]
+                    exports: [],
+                    bondLogs: [] // Separated Manual Bond Ledger array
                 }
             ],
             "Duplex Board": [], "Art Card": [], "Card Board": [], "C2S Paper": []
@@ -630,7 +686,6 @@
             closeModal('dashboardModal'); closeModal('lcSummaryModal'); closeModal('bondRegisterModal');
         }
 
-        // --- NEW GLOBAL SEARCH FUNCTION ---
         function handleGlobalSearch() {
             const query = document.getElementById('searchBar').value.toLowerCase().trim();
             const dropdown = document.getElementById('globalSearchDropdown');
@@ -638,7 +693,7 @@
             
             if (!query) {
                 dropdown.classList.add('hidden');
-                renderLedger(); // Keep original local search active
+                renderLedger(); 
                 return;
             }
             
@@ -681,9 +736,7 @@
                 dropdown.classList.add('hidden');
             }
         });
-        // ------------------------------------
 
-        // --- NEW BOND REGISTER FUNCTIONS ---
         function openBondRegisterModal(itemKey = currentItem, beId = 'ALL') {
             document.getElementById('bondItemFilter').innerHTML = '';
             itemsList.forEach(item => {
@@ -725,14 +778,14 @@
             let grandExpWt = 0;
 
             imports.forEach((imp, impIndex) => {
-                const expList = imp.exports || [];
-                const totalRows = Math.max(1, expList.length);
+                // Now using bondLogs for Manual entries
+                const bondLogs = imp.bondLogs || [];
+                const totalRows = Math.max(1, bondLogs.length);
                 let impTotalWt = imp.specs.reduce((sum, s) => sum + s.weight, 0);
                 grandImpWt += impTotalWt;
 
                 for(let i=0; i<totalRows; i++) {
                     const tr = document.createElement('tr');
-                    
                     if(i === 0) {
                         tr.innerHTML += `
                             <td rowspan="${totalRows}">${imp.sl || (impIndex + 1)}</td>
@@ -746,42 +799,30 @@
                         `;
                     }
                     
-                    const exp = expList[i];
-                    if(exp) {
-                        grandExpWt += exp.weight;
-                        let billExpDate = exp.beExpNo ? `${exp.beExpNo}<br>${exp.beExpDate || ''}` : '';
-                        let expLcDate = exp.expLcNo ? `${exp.expLcNo}<br>${exp.expLcDate || ''}` : '';
-                        let invDate = exp.invNo ? `${exp.invNo}<br>${exp.invDate || ''}` : '';
-                        let expNoDate = exp.expNo ? `${exp.expNo}<br>${exp.expExpDate2 || ''}` : '';
-                        let permitDate = exp.permitNo ? `${exp.permitNo}<br>${exp.permitDate || ''}` : '';
-                        
+                    const log = bondLogs[i];
+                    if(log) {
+                        grandExpWt += log.weight;
                         tr.innerHTML += `
-                            <td>${exp.date || ''}</td>
-                            <td>${billExpDate}</td>
-                            <td>${expLcDate}</td>
-                            <td>${invDate}</td>
-                            <td>${exp.expItemNameBond || ''}</td>
-                            <td>${expNoDate}</td>
-                            <td>${permitDate}</td>
-                            <td style="font-weight:bold;">${exp.weight.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                            <td>${log.date || ''}</td>
+                            <td>${log.beNo || ''}<br>${log.beDate || ''}</td>
+                            <td>${log.lcNo || ''}<br>${log.lcDate || ''}</td>
+                            <td>${log.invNo || ''}<br>${log.invDate || ''}</td>
+                            <td>${log.itemName || ''}</td>
+                            <td>${log.expNo || ''}<br>${log.expDate2 || ''}</td>
+                            <td>${log.permitNo || ''}<br>${log.permitDate || ''}</td>
+                            <td style="font-weight:bold;">${log.weight.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                         `;
                     } else {
                         tr.innerHTML += `<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>`;
                     }
                     
-                    // Added Action Column Content for Bond Register
                     let actionCell = `<td class="no-print bg-slate-50"><div class="flex flex-col gap-1 items-center justify-center">`;
-                    if (exp) {
-                        actionCell += `<button onclick="editExport('${itemKey}', '${imp.id}', '${exp.id}')" class="text-blue-600 hover:text-blue-800 font-bold text-[10px]">✏️ Edit</button>`;
-                        actionCell += `<button onclick="deleteExport('${itemKey}', '${imp.id}', '${exp.id}')" class="text-red-600 hover:text-red-800 font-bold text-[10px]">🗑️ Del</button>`;
-                    }
-                    if (i === 0) {
-                        if(exp) actionCell += `<div class="w-full border-t border-slate-300 my-1"></div>`; // Separator
-                        actionCell += `<button onclick="editImport('${imp.id}')" class="text-emerald-600 hover:text-emerald-800 font-bold text-[10px]">⚙️ Edit Imp</button>`;
+                    if (log) {
+                        actionCell += `<button onclick="editBondManualLog('${itemKey}', '${imp.id}', '${log.id}')" class="text-blue-600 hover:text-blue-800 font-bold text-[10px]">✏️ Edit</button>`;
+                        actionCell += `<button onclick="deleteBondManualLog('${itemKey}', '${imp.id}', '${log.id}')" class="text-red-600 hover:text-red-800 font-bold text-[10px]">🗑️ Del</button>`;
                     }
                     actionCell += `</div></td>`;
                     tr.innerHTML += actionCell;
-                    
                     tbody.appendChild(tr);
                 }
             });
@@ -791,39 +832,101 @@
                 <tr>
                     <th colspan="7" style="text-align:right;">Total Import Weight:</th>
                     <th>${grandImpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</th>
-                    <th colspan="7" style="text-align:right;">Total Export Weight:</th>
+                    <th colspan="7" style="text-align:right;">Total Bond Exported Weight:</th>
                     <th>${grandExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</th>
                     <th class="no-print"></th>
                 </tr>
                 <tr>
-                    <th colspan="15" style="text-align:right; color:#0f766e; font-size:12px;">BOND REGISTER BALANCE WEIGHT:</th>
+                    <th colspan="15" style="text-align:right; color:#0f766e; font-size:12px;">MANUAL BOND REGISTER BALANCE:</th>
                     <th style="background-color:#115e59; color:#fff; font-size:12px;">${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</th>
                     <th class="no-print"></th>
                 </tr>
             `;
         }
 
-        // Direct Open Export from Bond Register
-        function openExportModalFromBond() {
+        function openManualBondExportModal() {
             const item = document.getElementById('bondItemFilter').value;
-            const be = document.getElementById('bondBeFilter').value;
-            openExportModalNew();
-            if(item) {
-                document.getElementById('modalExpItemSelect').value = item;
-                populateModalBeDropdown();
-                if(be !== 'ALL') {
-                    document.getElementById('modalExpBeSelect').value = be;
-                    calculateModalBeBalance();
-                }
+            const beId = document.getElementById('bondBeFilter').value;
+            if(beId === 'ALL') return alert("Please select a specific Bill of Entry to add Manual Bond Export.");
+            
+            document.getElementById('bondExportForm').reset();
+            document.getElementById('editBondExpId').value = "";
+            openModal('bondExportModal');
+        }
+
+        function saveBondManualExport(e) {
+            e.preventDefault();
+            const itemKey = document.getElementById('bondItemFilter').value;
+            const impId = document.getElementById('bondBeFilter').value;
+            const expId = document.getElementById('editBondExpId').value;
+            const imp = db[itemKey].find(i => i.id === impId);
+
+            const logObj = {
+                id: expId || "blog_" + Date.now(),
+                date: document.getElementById('bExpDate').value,
+                beNo: document.getElementById('bExpBeNo').value,
+                beDate: document.getElementById('bExpBeDate').value,
+                lcNo: document.getElementById('bExpLcNo').value,
+                lcDate: document.getElementById('bExpLcDate').value,
+                invNo: document.getElementById('bExpInvNo').value,
+                invDate: document.getElementById('bExpInvDate').value,
+                itemName: document.getElementById('bExpItemName').value,
+                expNo: document.getElementById('bExpExpNo').value,
+                expDate2: document.getElementById('bExpExpDate').value,
+                permitNo: document.getElementById('bExpPermitNo').value,
+                permitDate: document.getElementById('bExpPermitDate').value,
+                weight: parseFloat(document.getElementById('bExpWeight').value)
+            };
+
+            if(!imp.bondLogs) imp.bondLogs = [];
+            if(expId) {
+                const idx = imp.bondLogs.findIndex(l => l.id === expId);
+                imp.bondLogs[idx] = logObj;
+            } else {
+                imp.bondLogs.push(logObj);
+            }
+
+            saveToLocalStorage();
+            renderBondRegisterTable();
+            closeModal('bondExportModal');
+        }
+
+        function editBondManualLog(itemKey, impId, logId) {
+            const imp = db[itemKey].find(i => i.id === impId);
+            const log = imp.bondLogs.find(l => l.id === logId);
+            
+            document.getElementById('editBondExpId').value = logId;
+            document.getElementById('bExpDate').value = log.date;
+            document.getElementById('bExpBeNo').value = log.beNo;
+            document.getElementById('bExpBeDate').value = log.beDate;
+            document.getElementById('bExpLcNo').value = log.lcNo;
+            document.getElementById('bExpLcDate').value = log.lcDate;
+            document.getElementById('bExpInvNo').value = log.invNo;
+            document.getElementById('bExpInvDate').value = log.invDate;
+            document.getElementById('bExpItemName').value = log.itemName;
+            document.getElementById('bExpExpNo').value = log.expNo;
+            document.getElementById('bExpExpDate').value = log.expDate2;
+            document.getElementById('bExpPermitNo').value = log.permitNo;
+            document.getElementById('bExpPermitDate').value = log.permitDate;
+            document.getElementById('bExpWeight').value = log.weight;
+            
+            openModal('bondExportModal');
+        }
+
+        function deleteBondManualLog(itemKey, impId, logId) {
+            if(confirm("Delete this Manual Bond Entry?")) {
+                const imp = db[itemKey].find(i => i.id === impId);
+                imp.bondLogs = imp.bondLogs.filter(l => l.id !== logId);
+                saveToLocalStorage();
+                renderBondRegisterTable();
             }
         }
-        
+
         function printBondRegister() {
             document.body.classList.add('printing-bond');
             window.print();
             document.body.classList.remove('printing-bond');
         }
-        // -----------------------------------
 
         function renderDashboardSummary() {
             const tbody = document.getElementById('dashboardBody');
@@ -851,7 +954,7 @@
                 grandExpPkt += totalExpPkt; grandExpWt += totalExpWt;
                 grandBalPkt += balPkt; grandBalRoll += balRoll; grandBalWt += balWt;
 
-                const theme = itemThemeMap[item];
+                const theme = itemThemeMap[item] || { base: "bg-teal-500/5", border: "border-teal-500/20", dark: "bg-teal-950/40", text: "text-teal-400" };
                 const tr = document.createElement('tr');
                 tr.className = `border-b border-slate-800 hover:bg-slate-800/80 transition cursor-pointer ${theme.dark}`;
                 tr.onclick = () => navigateToItem(item, "ALL");
@@ -864,7 +967,7 @@
                     <td class="p-3 border-r border-slate-800 text-orange-400">${totalExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
                     <td class="p-3 border-r border-slate-800 text-emerald-400 font-bold">${balPkt.toLocaleString()}</td>
                     <td class="p-3 border-r border-slate-800 text-emerald-400 font-bold">${balRoll.toLocaleString()}</td>
-                    <td class="p-3 text-emerald-400 font-bold">${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg<br><span class="text-[9px] text-cyan-400 font-normal tracking-wide">Bond Bal: ${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></td>
+                    <td class="p-3 text-emerald-400 font-bold">${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -878,39 +981,37 @@
                     <td class="p-3 text-orange-400">${grandExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
                     <td class="p-3 text-emerald-400 font-extrabold">${grandBalPkt.toLocaleString()}</td>
                     <td class="p-3 text-emerald-400 font-extrabold">${grandBalRoll.toLocaleString()}</td>
-                    <td class="p-3 text-emerald-400 font-extrabold text-sm">${grandBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg<br><span class="text-[9px] text-cyan-400 font-normal tracking-wide">Bond Bal: ${grandBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></td>
+                    <td class="p-3 text-emerald-400 font-extrabold text-sm">${grandBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
                 </tr>`;
         }
 
         function renderLcSummaryDashboard() {
             const tbody = document.getElementById('lcSummaryBody'); const tfoot = document.getElementById('lcSummaryFoot');
             const filterValue = document.getElementById('lcStatusFilter').value; 
-            
             tbody.innerHTML = ""; tfoot.innerHTML = "";
 
             let globalImpPkt = 0, globalImpRoll = 0, globalImpWt = 0;
             let globalExpPkt = 0, globalExpWt = 0;
             let globalBalPkt = 0, globalBalRoll = 0, globalBalWt = 0;
+            let globalBondBalWt = 0;
 
             itemsList.forEach(item => {
                 let imports = db[item] || []; if (imports.length === 0) return;
-                
                 let filteredImports = imports.filter(imp => {
                     let impPkt = imp.specs.reduce((sum, s) => sum + (s.pkt || 0), 0);
                     let expPkt = imp.exports.reduce((sum, e) => sum + e.pkt, 0);
                     let balPkt = impPkt - expPkt;
-                    
                     if (filterValue === "ACTIVE") return balPkt > 0;
                     if (filterValue === "CLOSED") return balPkt <= 0;
                     return true; 
                 });
 
                 if (filteredImports.length === 0) return;
-
                 let subImpPkt = 0, subImpRoll = 0, subImpWt = 0;
                 let subExpPkt = 0, subExpWt = 0; let subBalPkt = 0, subBalRoll = 0, subBalWt = 0;
+                let subBondBalWt = 0;
 
-                const theme = itemThemeMap[item]; 
+                const theme = itemThemeMap[item] || { base: "bg-teal-500/5", border: "border-teal-500/20", dark: "bg-teal-950/40", text: "text-teal-400" }; 
                 const totalRowspan = filteredImports.length + 1; 
 
                 filteredImports.forEach((imp, index) => {
@@ -920,41 +1021,35 @@
                     let expPkt = imp.exports.reduce((sum, e) => sum + e.pkt, 0);
                     let expWt = imp.exports.reduce((sum, e) => sum + e.weight, 0);
                     let balPkt = impPkt - expPkt; let balRoll = impRoll; let balWt = impWt - expWt;
+                    
+                    // Calculation for Bond Balance
+                    let bondExpWt = (imp.bondLogs || []).reduce((sum, l) => sum + l.weight, 0);
+                    let bondBalWt = impWt - bondExpWt;
 
                     subImpPkt += impPkt; subImpRoll += impRoll; subImpWt += impWt;
                     subExpPkt += expPkt; subExpWt += expWt;
                     subBalPkt += balPkt; subBalRoll += balRoll; subBalWt += balWt;
+                    subBondBalWt += bondBalWt;
 
                     const tr = document.createElement('tr');
-                    
-                    if (balPkt <= 0) {
-                        tr.className = "border-b border-red-700 bg-red-600 text-white font-semibold transition";
-                    } else {
-                        tr.className = `border-b border-slate-800/80 hover:bg-slate-800/40 transition text-slate-200 ${theme.base}`;
-                    }
+                    let statusClass = (balPkt <= 0) ? "bg-red-600 text-white" : `${theme.base} text-slate-200`;
+                    tr.className = `border-b border-slate-800/80 hover:bg-slate-800/40 transition ${statusClass}`;
 
                     if (index === 0) {
-                        let itemLabelClass = balPkt <= 0 ? "bg-red-800 text-white" : `${theme.text} ${theme.dark}`;
-                        tr.innerHTML += `<td class="p-2.5 text-left pl-4 border-r border-slate-800 font-bold uppercase ${itemLabelClass}" rowspan="${totalRowspan}">📂 ${item}</td>`;
+                        tr.innerHTML += `<td class="p-2.5 text-left pl-4 border-r border-slate-800 font-bold uppercase ${theme.dark} ${theme.text}" rowspan="${totalRowspan}">📂 ${item}</td>`;
                     }
-
-                    let monoLinkStyle = balPkt <= 0 ? "text-white underline" : "text-slate-200 hover:underline font-mono";
-                    let lcTextStyle = balPkt <= 0 ? "text-slate-100" : "text-slate-400";
-                    let impWtStyle = balPkt <= 0 ? "text-white" : "text-blue-300";
-                    let expWtStyle = balPkt <= 0 ? "text-white" : "text-orange-400";
-                    let balPktStyle = balPkt <= 0 ? "text-white font-black" : "text-emerald-400 font-bold";
-
                     tr.innerHTML += `
-                        <td onclick="navigateToItem('${item}', '${imp.id}')" class="p-2.5 border-r border-slate-800 font-bold cursor-pointer ${monoLinkStyle}">${imp.beNo}</td>
-                        <td onclick="navigateToItem('${item}', '${imp.id}')" class="p-2.5 border-r border-slate-800 cursor-pointer ${lcTextStyle}">${imp.lc}</td>
+                        <td onclick="navigateToItem('${item}', '${imp.id}')" class="p-2.5 border-r border-slate-800 font-bold cursor-pointer underline">${imp.beNo}</td>
+                        <td class="p-2.5 border-r border-slate-800">${imp.lc}</td>
                         <td class="p-2.5 border-r border-slate-800">${impPkt.toLocaleString()}</td>
                         <td class="p-2.5 border-r border-slate-800">${impRoll.toLocaleString()}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${impWtStyle}">${impWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${expWtStyle}">${expPkt.toLocaleString()}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${expWtStyle}">${expWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${balPktStyle}">${balPkt.toLocaleString()}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${balPktStyle}">${balRoll.toLocaleString()}</td>
-                        <td class="p-2.5 ${balPktStyle}">${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}<br><span class="text-[9px] text-cyan-200 font-normal">Bond Bal: ${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></td>
+                        <td class="p-2.5 border-r border-slate-800">${impWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td class="p-2.5 border-r border-slate-800">${expPkt.toLocaleString()}</td>
+                        <td class="p-2.5 border-r border-slate-800">${expWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td class="p-2.5 border-r border-slate-800 font-bold">${balPkt.toLocaleString()}</td>
+                        <td class="p-2.5 border-r border-slate-800 font-bold">${balRoll.toLocaleString()}</td>
+                        <td class="p-2.5 border-r border-slate-800 font-bold">${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td class="p-2.5 font-bold text-indigo-400">${bondBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -964,17 +1059,19 @@
                 totalTr.innerHTML = `
                     <td colspan="2" class="p-2 text-right pr-4 border-r border-slate-800 ${theme.text} uppercase tracking-wider text-[10px]">Sum:</td>
                     <td class="p-2 border-r border-slate-800">${subImpPkt.toLocaleString()}</td><td class="p-2 border-r border-slate-800">${subImpRoll.toLocaleString()}</td>
-                    <td class="p-2 border-r border-slate-800 text-blue-400">${subImpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                    <td class="p-2 border-r border-slate-800 text-orange-400">${subExpPkt.toLocaleString()}</td>
-                    <td class="p-2 border-r border-slate-800 text-orange-400">${subExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                    <td class="p-2 border-r border-slate-800">${subImpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                    <td class="p-2 border-r border-slate-800">${subExpPkt.toLocaleString()}</td>
+                    <td class="p-2 border-r border-slate-800">${subExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                     <td class="p-2 border-r border-slate-800 text-emerald-400">${subBalPkt.toLocaleString()}</td>
                     <td class="p-2 border-r border-slate-800 text-emerald-400">${subBalRoll.toLocaleString()}</td>
-                    <td class="p-2 text-emerald-400 bg-emerald-500/10">${subBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}<br><span class="text-[9px] text-cyan-400 font-normal">Bond Bal: ${subBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></td>
+                    <td class="p-2 border-r border-slate-800 text-emerald-400 bg-emerald-500/10">${subBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                    <td class="p-2 text-indigo-300 bg-indigo-500/10">${subBondBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                 `;
                 tbody.appendChild(totalTr);
 
                 globalImpPkt += subImpPkt; globalImpRoll += subImpRoll; globalImpWt += subImpWt;
                 globalExpPkt += subExpPkt; globalExpWt += subExpWt; globalBalPkt += subBalPkt; globalBalRoll += subBalRoll; globalBalWt += subBalWt;
+                globalBondBalWt += subBondBalWt;
             });
 
             tfoot.innerHTML = `
@@ -986,25 +1083,32 @@
                     <td class="p-3 font-bold text-orange-400">${globalExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
                     <td class="p-3 text-emerald-400 font-black">${globalBalPkt.toLocaleString()}</td>
                     <td class="p-3 text-emerald-400 font-black">${globalBalRoll.toLocaleString()}</td>
-                    <td class="p-3 text-emerald-400 font-black text-xs bg-emerald-500/20">${globalBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg<br><span class="text-[9px] text-cyan-400 font-normal tracking-wide">Bond Bal: ${globalBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></td>
+                    <td class="p-3 text-emerald-400 font-black text-xs bg-emerald-500/20">${globalBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
+                    <td class="p-3 text-indigo-400 font-black text-xs bg-indigo-500/20">${globalBondBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
                 </tr>`;
         }
 
         function renderTabs() {
-            const tabContainer = document.getElementById('itemTabs'); tabContainer.innerHTML = "";
+            const tabContainer = document.getElementById('itemTabs'); 
+            tabContainer.innerHTML = "";
             itemsList.forEach(item => {
                 const btn = document.createElement('button'); btn.innerText = item;
                 btn.className = `px-4 py-2 font-bold rounded-xl text-xs transition-all duration-150 ${item === currentItem ? 'bg-gradient-to-r from-slate-800 to-slate-700 text-white shadow border border-slate-600' : 'bg-slate-900/60 hover:bg-slate-800 text-slate-400'}`;
                 btn.onclick = () => { currentItem = item; renderTabs(); buildBeDropdown(); renderLedger(); };
                 tabContainer.appendChild(btn);
             });
+            // Add Item button right next to tabs
+            const addBtn = document.createElement('button');
+            addBtn.innerHTML = "⚙️ Add Item";
+            addBtn.className = "bg-purple-600/20 border border-purple-500/50 text-purple-300 hover:bg-purple-600 hover:text-white px-3 py-2 rounded-xl text-xs font-bold transition ml-2";
+            addBtn.onclick = () => openItemManager();
+            tabContainer.appendChild(addBtn);
         }
 
         function buildBeDropdown() {
             const selector = document.getElementById('beSelector'); selector.innerHTML = "";
             const defaultOpt = document.createElement('option'); defaultOpt.value = "ALL"; defaultOpt.innerText = "📁 All Bill of Entries";
             selector.appendChild(defaultOpt);
-
             (db[currentItem] || []).forEach(imp => {
                 const opt = document.createElement('option'); opt.value = imp.id; opt.innerText = `📄 B/E: ${imp.beNo} (LC: ${imp.lc})`;
                 selector.appendChild(opt);
@@ -1019,7 +1123,6 @@
             const imports = db[currentItem] || [];
             const printBtn = document.getElementById('pdfPrintBtn');
             const statusBadge = document.getElementById('beDeliveryStatus');
-
             let totalImpPkt = 0, totalImpRoll = 0, totalImpWt = 0; 
             let totalExpPkt = 0, totalExpWt = 0;
 
@@ -1045,7 +1148,6 @@
             }
 
             let netPktBalance = totalImpPkt - totalExpPkt;
-
             if (netPktBalance > 0) {
                 statusBadge.innerText = "Delivery Running";
                 statusBadge.className = "bg-green-600 text-white font-bold px-2 py-1 rounded text-[10px] tracking-wide inline-block uppercase shadow-sm";
@@ -1053,7 +1155,6 @@
                 statusBadge.innerText = "Delivery Close";
                 statusBadge.className = "bg-red-600 text-white font-bold px-2 py-1 rounded text-[10px] tracking-wide inline-block uppercase shadow-sm";
             }
-
             document.getElementById('beTotalWeight').innerText = totalImpWt.toLocaleString(undefined, {minimumFractionDigits:2}) + " kg";
             document.getElementById('beExportedWeight').innerText = totalExpWt.toLocaleString(undefined, {minimumFractionDigits:2}) + " kg";
             document.getElementById('beBalPkt').innerText = netPktBalance.toLocaleString() + " Pkt";
@@ -1069,157 +1170,46 @@
         function generateBillOfEntryPDF(impId) {
             const imp = db[currentItem].find(i => i.id === impId);
             if(!imp) return;
-
             const printContainer = document.getElementById('printLayoutContainer');
             const originalTitle = document.title;
-            
             const formattedFileName = `LC_${imp.lc.replace(/\s+/g, '_')}_BE_${imp.beNo.replace(/\s+/g, '_')}`;
             document.title = formattedFileName;
-
-            const now = new Date();
-            const reportTime = now.toLocaleTimeString();
-            const reportDate = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-
+            const reportDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
             let totImpPkt = imp.specs.reduce((sum, s) => sum + (s.pkt || 0), 0);
             let totExpPkt = imp.exports.reduce((sum, e) => sum + e.pkt, 0);
             let netPkt = totImpPkt - totExpPkt;
-            
-            let pdfStatusText = netPkt > 0 ? "Delivery Running" : "Delivery Close";
-            let pdfStatusClass = netPkt > 0 ? "print-status-running" : "print-status-close";
-
-            let htmlContent = `
-                <div style="font-family: Arial, sans-serif; color: #000000; padding: 10px;">
-                    <table style="width: 100%; border: none !important; margin-bottom: 15px;">
-                        <tr style="border: none !important;">
-                            <td style="width: 60%; border: none !important; text-align: left; vertical-align: top; padding: 0;">
-                                <h1 style="font-size: 20px; font-weight: bold; margin: 0; color: #1e3a8a; text-transform: uppercase;">${document.querySelector('h1').innerText}</h1>
-                                <p style="font-size: 11px; color: #475569; margin: 3px 0 0 0;">Plot No: 49 & 50, Mongla EPZ, Mongla(9351), Bagerhat, Khulna, Bangladesh.</p>
-                                <p style="font-size: 13px; font-weight: bold; color: #0f766e; margin: 8px 0 0 0;">Item: ${currentItem}</p>
-                            </td>
-                            <td style="width: 40%; border: none !important; text-align: right; vertical-align: top; padding: 0; font-size: 10px; color: #334155;">
-                                <p style="margin: 0; font-weight: bold; font-size: 12px; color: #b45309;">INVENTORY LEDGER REPORT</p>
-                                <p style="margin: 5px 0 0 0;"><strong>Generate Date:</strong> ${reportDate}</p>
-                                <p style="margin: 2px 0 0 0;"><strong>Generate Time:</strong> ${reportTime}</p>
-                                <p style="margin: 4px 0 0 0;"><strong>Delivery Status:</strong> <span class="${pdfStatusClass}">${pdfStatusText}</span></p>
-                            </td>
+            let htmlContent = `<div style="font-family: Arial, sans-serif; color: #000; padding: 10px; text-align: center;">
+                <h1 style="font-size: 20px; font-weight: bold; margin: 0; text-transform: uppercase;">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
+                <p style="font-size: 11px; margin: 5px 0;">Plot No: 49 & 50, Mongla EPZ, Mongla(9351), Bagerhat, Khulna, Bangladesh.</p>
+                <hr style="border: 1px solid #000;">
+                <p style="text-align:left;"><strong>Report for:</strong> ${currentItem} | <strong>LC:</strong> ${imp.lc} | <strong>B/E:</strong> ${imp.beNo} | <strong>Date:</strong> ${reportDate}</p>
+                <table style="width:100%; border-collapse: collapse; margin-top:10px;">
+                    <thead>
+                        <tr style="background:#f0f0f0;">
+                            <th style="border:1px solid #000; padding:5px;">GSM</th>
+                            <th style="border:1px solid #000; padding:5px;">Size</th>
+                            <th style="border:1px solid #000; padding:5px;">Imp Weight</th>
+                            <th style="border:1px solid #000; padding:5px;">Exp Date</th>
+                            <th style="border:1px solid #000; padding:5px;">Truck No</th>
+                            <th style="border:1px solid #000; padding:5px;">Exp Weight</th>
                         </tr>
-                    </table>
-
-                    <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 11px;">
-                        <table style="width: 100%; border: none !important;">
-                            <tr style="border: none !important;">
-                                <td style="border: none !important; padding: 3px 0;"><strong>Bill of Entry (B/E) No:</strong> ${imp.beNo}</td>
-                                <td style="border: none !important; padding: 3px 0;"><strong>B/E Date:</strong> ${imp.beDate}</td>
-                                <td style="border: none !important; padding: 3px 0;"><strong>LC Number:</strong> ${imp.lc}</td>
-                            </tr>
-                            <tr style="border: none !important;">
-                                <td style="border: none !important; padding: 3px 0;"><strong>In Bond Number:</strong> ${imp.inBond}</td>
-                                <td style="border: none !important; padding: 3px 0;"><strong>Bank Name:</strong> ${imp.bank}</td>
-                                <td style="border: none !important; padding: 3px 0; color: #16a34a;"><strong>Verified Balance Sync:</strong> Secure</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 10px;">
-                        <thead>
-                            <tr style="background-color: #f1f5f9; font-weight: bold;">
-                                <th colspan="6" style="border: 1px solid #475569; padding: 6px; background-color: #e2e8f0;">IMPORT INFOMATION</th>
-                                <th colspan="5" style="border: 1px solid #475569; padding: 6px; background-color: #fef3c7;">EXPORT INFOMATION</th>
-                            </tr>
-                            <tr style="background-color: #f8fafc; font-weight: bold;">
-                                <th style="border: 1px solid #475569; padding: 5px;">GSM</th>
-                                <th style="border: 1px solid #475569; padding: 5px;">Size</th>
-                                <th style="border: 1px solid #475569; padding: 5px;">Sheet</th>
-                                <th style="border: 1px solid #475569; padding: 5px;">Imp Pkt</th>
-                                <th style="border: 1px solid #475569; padding: 5px;">Imp Roll</th>
-                                <th style="border: 1px solid #475569; padding: 5px; background-color: #dbeafe;">Weight</th>
-                                <th style="border: 1px solid #475569; padding: 5px;">Exp Date</th>
-                                <th style="border: 1px solid #475569; padding: 5px;">Truck No</th>
-                                <th style="border: 1px solid #475569; padding: 5px;">Exp Pkt</th>
-                                <th style="border: 1px solid #475569; padding: 5px; background-color: #ffedd5;">Total Weight</th>
-                                <th style="border: 1px solid #475569; padding: 5px;">Truck Rent</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-
-            const totalRows = Math.max(imp.specs.length, imp.exports.length);
-            let checkImpPkt = 0, checkImpRoll = 0, checkImpWt = 0;
-            let checkExpPkt = 0, checkExpWt = 0;
-
-            for(let i = 0; i < totalRows; i++) {
-                const spec = imp.specs[i] || null;
-                const exp = imp.exports[i] || null;
-
-                if(spec) { checkImpPkt += (spec.pkt || 0); checkImpRoll += (spec.roll || 0); checkImpWt += spec.weight; }
-                if(exp) { checkExpPkt += exp.pkt; checkExpWt += exp.weight; }
-
-                htmlContent += `<tr>`;
-                if(spec) {
-                    htmlContent += `
-                        <td style="border: 1px solid #475569; padding: 5px;">${spec.gsm}</td>
-                        <td style="border: 1px solid #475569; padding: 5px; font-family: monospace;">${spec.size}</td>
-                        <td style="border: 1px solid #475569; padding: 5px;">${spec.sheet}</td>
-                        <td style="border: 1px solid #475569; padding: 5px;">${(spec.pkt || 0).toLocaleString()}</td>
-                        <td style="border: 1px solid #475569; padding: 5px;">${(spec.roll || 0).toLocaleString()}</td>
-                        <td style="border: 1px solid #475569; padding: 5px; font-weight: bold; background-color: #f0fdf4;">${spec.weight.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                    `;
-                } else {
-                    htmlContent += `<td style="border: 1px solid #475569; padding: 5px; color: #94a3b8;">-</td><td style="border: 1px solid #475569; padding: 5px; color: #94a3b8;">-</td><td style="border: 1px solid #475569; padding: 5px; color: #94a3b8;">-</td><td style="border: 1px solid #475569; padding: 5px;">0</td><td style="border: 1px solid #475569; padding: 5px;">0</td><td style="border: 1px solid #475569; padding: 5px;">0.00</td>`;
-                }
-
-                if(exp) {
-                    htmlContent += `
-                        <td style="border: 1px solid #475569; padding: 5px;">${exp.date}</td>
-                        <td style="border: 1px solid #475569; padding: 5px; font-family: monospace;">${exp.truck}</td>
-                        <td style="border: 1px solid #475569; padding: 5px;">${exp.pkt.toLocaleString()}</td>
-                        <td style="border: 1px solid #475569; padding: 5px; font-weight: bold; background-color: #fffaf0;">${exp.weight.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                        <td style="border: 1px solid #475569; padding: 5px;">${exp.rent}</td>
-                    `;
-                } else {
-                    htmlContent += `<td colspan="5" style="border: 1px solid #475569; padding: 5px; color: #94a3b8; background-color: #fafafa;">-</td>`;
-                }
-                htmlContent += `</tr>`;
+                    </thead>
+                    <tbody>`;
+            const rows = Math.max(imp.specs.length, imp.exports.length);
+            for(let i=0; i<rows; i++) {
+                let s = imp.specs[i], e = imp.exports[i];
+                htmlContent += `<tr>
+                    <td style="border:1px solid #000; padding:5px;">${s ? s.gsm : '-'}</td>
+                    <td style="border:1px solid #000; padding:5px;">${s ? s.size : '-'}</td>
+                    <td style="border:1px solid #000; padding:5px;">${s ? s.weight.toFixed(2) : '-'}</td>
+                    <td style="border:1px solid #000; padding:5px;">${e ? e.date : '-'}</td>
+                    <td style="border:1px solid #000; padding:5px;">${e ? e.truck : '-'}</td>
+                    <td style="border:1px solid #000; padding:5px;">${e ? e.weight.toFixed(2) : '-'}</td>
+                </tr>`;
             }
-
-            let netBalRoll = checkImpRoll;
-            let netBalWt = checkImpWt - checkExpWt;
-
-            htmlContent += `
-                            <tr style="font-weight: bold; background-color: #f8fafc;">
-                                <td colspan="3" style="border: 1px solid #475569; padding: 6px; text-align: right;">Total Accumulation:</td>
-                                <td style="border: 1px solid #475569; padding: 6px;">${checkImpPkt.toLocaleString()}</td>
-                                <td style="border: 1px solid #475569; padding: 6px;">${checkImpRoll.toLocaleString()}</td>
-                                <td style="border: 1px solid #475569; padding: 6px; color: #1e40af;">${checkImpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                                <td colspan="2" style="border: 1px solid #475569; padding: 6px; text-align: right;">Total Deductions:</td>
-                                <td style="border: 1px solid #475569; padding: 6px;">${checkExpPkt.toLocaleString()}</td>
-                                <td style="border: 1px solid #475569; padding: 6px; color: #9a3412;">${checkExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                                <td style="border: 1px solid #475569; padding: 6px;"></td>
-                            </tr>
-                            <tr style="font-weight: bold; background-color: #f0fdf4; font-size: 11px;">
-                                <td colspan="3" style="border: 1px solid #475569; padding: 6px; text-align: right; color: #166534; font-weight: 900;">NET AVAILABLE STOCK:</td>
-                                <td style="border: 1px solid #475569; padding: 6px; color: #166534;">${netPkt.toLocaleString()} Pkt</td>
-                                <td style="border: 1px solid #475569; padding: 6px; color: #166534;">${netBalRoll.toLocaleString()} Roll</td>
-                                <td style="border: 1px solid #475569; padding: 6px; color: #15803d; font-size: 11px;" colspan="6; text-align: left;">= ${netBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg (Net Balanced Weight Logs)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div style="margin-top: 50px; width: 100%;">
-                        <table style="width: 100%; border: none !important;">
-                            <tr style="border: none !important;">
-                                <td style="width: 33%; border: none !important; text-align: left; padding: 0;"><span style="border-top: 1px solid #000; padding-top: 5px; font-size: 10px;">Prepared By</span></td>
-                                <td style="width: 33%; border: none !important; text-align: center; padding: 0;"><span style="border-top: 1px solid #000; padding-top: 5px; font-size: 10px;">Verified By Warehouse</span></td>
-                                <td style="width: 33%; border: none !important; text-align: right; padding: 0;"><span style="border-top: 1px solid #000; padding-top: 5px; font-size: 10px;">Authorized Signature</span></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            `;
-
+            htmlContent += `</tbody></table></div>`;
             printContainer.innerHTML = htmlContent;
             window.print();
-            
             document.title = originalTitle;
             printContainer.innerHTML = "";
         }
@@ -1244,7 +1234,7 @@
         function removeSpecificationRow(id) {
             const rows = document.getElementById('specificationsContainer').children;
             if(rows.length > 1) { document.getElementById(id).remove(); }
-            else { alert("At least one size row must remain!"); }
+            else { alert("At least one row must remain!"); }
         }
 
         function openImportModalNew() {
@@ -1257,7 +1247,6 @@
             document.getElementById('exportModalTitle').innerText = "Deduct / Export Material Entry";
             document.getElementById('editExportId').value = ""; document.getElementById('hiddenParentItem').value = "";
             document.getElementById('exportForm').reset();
-            
             const itemSelect = document.getElementById('modalExpItemSelect'); itemSelect.innerHTML = ""; itemSelect.disabled = false;
             itemsList.forEach(item => {
                 const opt = document.createElement('option'); opt.value = item; opt.innerText = item;
@@ -1272,8 +1261,8 @@
             const beSelect = document.getElementById('modalExpBeSelect'); beSelect.innerHTML = ""; beSelect.disabled = false;
             const imports = db[selectedItem] || [];
             if(imports.length === 0) {
-                beSelect.innerHTML = `<option value="">No Bill of Entry Found</option>`;
-                document.getElementById('modalTargetPkt').innerText = "0 Pkt"; document.getElementById('modalTargetRoll').innerText = "0 Roll"; document.getElementById('modalTargetMax').innerText = "0.00 kg"; return;
+                beSelect.innerHTML = `<option value="">No B/E Found</option>`;
+                return;
             }
             imports.forEach(imp => {
                 const opt = document.createElement('option'); opt.value = imp.id; opt.innerText = `${imp.beNo} (LC: ${imp.lc})`;
@@ -1286,14 +1275,12 @@
             const selectedItem = document.getElementById('modalExpItemSelect').value;
             const selectedImpId = document.getElementById('modalExpBeSelect').value;
             const expId = document.getElementById('editExportId').value; if(!selectedImpId) return;
-
             const imp = db[selectedItem].find(i => i.id === selectedImpId);
             let totalImpPkt = imp.specs.reduce((sum, s) => sum + (s.pkt || 0), 0);
             let totalImpRoll = imp.specs.reduce((sum, s) => sum + (s.roll || 0), 0);
             let totalImpWt = imp.specs.reduce((sum, s) => sum + s.weight, 0);
             let totalExpWt = imp.exports.reduce((sum, e) => e.id !== expId ? sum + e.weight : sum, 0);
             let totalExpPkt = imp.exports.reduce((sum, e) => e.id !== expId ? sum + e.pkt : sum, 0);
-
             document.getElementById('modalTargetPkt').innerText = (totalImpPkt - totalExpPkt).toLocaleString() + " Pkt";
             document.getElementById('modalTargetRoll').innerText = totalImpRoll.toLocaleString() + " Roll";
             document.getElementById('modalTargetMax').innerText = (totalImpWt - totalExpWt).toLocaleString(undefined, {minimumFractionDigits: 2}) + " kg";
@@ -1309,18 +1296,12 @@
             const tbody = document.getElementById('ledgerBody'); tbody.innerHTML = "";
             const searchQuery = document.getElementById('searchBar').value.toLowerCase().trim();
             const filterBeId = document.getElementById('beSelector').value;
-
             const imports = db[currentItem] || [];
             let grandImpPkt = 0, grandImpRoll = 0, grandImpWt = 0; let grandExpPkt = 0, grandExpWt = 0;
 
             imports.forEach(imp => {
                 if(filterBeId && filterBeId !== "ALL" && imp.id !== filterBeId) return;
-                let filteredExports = imp.exports;
-                if(searchQuery) {
-                    filteredExports = imp.exports.filter(e => e.truck.toLowerCase().includes(searchQuery) || e.date.includes(searchQuery));
-                    if(!imp.beNo.toLowerCase().includes(searchQuery) && !imp.lc.toLowerCase().includes(searchQuery) && !imp.inBond.toLowerCase().includes(searchQuery) && filteredExports.length === 0) return;
-                }
-
+                const filteredExports = imp.exports.filter(e => e.truck.toLowerCase().includes(searchQuery) || imp.beNo.toLowerCase().includes(searchQuery));
                 const impTotalPkt = imp.specs.reduce((sum, s) => sum + (s.pkt || 0), 0);
                 const impTotalRoll = imp.specs.reduce((sum, s) => sum + (s.roll || 0), 0);
                 const impTotalWt = imp.specs.reduce((sum, s) => sum + s.weight, 0);
@@ -1331,73 +1312,67 @@
                     const spec = imp.specs[i] || null; const exp = filteredExports[i] || null;
                     if(exp) { grandExpPkt += exp.pkt; grandExpWt += exp.weight; }
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-800/40 border-b border-slate-800/80 text-center";
-
+                    tr.className = "hover:bg-slate-800/40 border-b border-slate-800/80";
                     if(i === 0) {
                         tr.innerHTML += `
-                            <td class="p-2 border-r border-slate-800 font-bold bg-slate-950/40" rowspan="${totalRows}">${imp.sl}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-400" rowspan="${totalRows}">${imp.inBond}</td>
-                            <td class="p-2 border-r border-slate-800 font-bold text-amber-400 cursor-pointer hover:text-white hover:underline transition-colors" rowspan="${totalRows}" onclick="openBondRegisterModal('${currentItem}', '${imp.id}')" title="Click to open Bond Register for this B/E">${imp.beNo}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-400" rowspan="${totalRows}">${imp.beDate}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-400" rowspan="${totalRows}">${imp.bank}</td>
-                            <td class="p-2 border-r border-slate-800 font-semibold text-blue-400" rowspan="${totalRows}">${imp.lc}</td>
+                            <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.sl}</td>
+                            <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.inBond}</td>
+                            <td class="p-2 border-r border-slate-800 font-bold text-amber-400" rowspan="${totalRows}">${imp.beNo}</td>
+                            <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.beDate}</td>
+                            <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.bank}</td>
+                            <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.lc}</td>
                         `;
                     }
-
                     if(spec) {
                         tr.innerHTML += `
-                            <td class="p-2 border-r border-slate-800 bg-slate-950/10 text-slate-400">${spec.gsm}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-300 font-mono">${spec.size}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-400">${spec.sheet}</td>
-                            <td class="p-2 border-r border-slate-800 font-bold text-slate-200">${(spec.pkt || 0).toLocaleString()}</td>
-                            <td class="p-2 border-r border-slate-800 font-bold text-teal-400">${(spec.roll || 0).toLocaleString()}</td>
-                            <td class="p-2 border-r border-slate-800 font-bold bg-blue-950/20 text-blue-300">${spec.weight.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                            <td class="p-2 border-r border-slate-800">${spec.gsm}</td>
+                            <td class="p-2 border-r border-slate-800">${spec.size}</td>
+                            <td class="p-2 border-r border-slate-800">${spec.sheet}</td>
+                            <td class="p-2 border-r border-slate-800">${(spec.pkt || 0).toLocaleString()}</td>
+                            <td class="p-2 border-r border-slate-800">${(spec.roll || 0).toLocaleString()}</td>
+                            <td class="p-2 border-r border-slate-800">${spec.weight.toFixed(2)}</td>
                         `;
                     } else {
-                        tr.innerHTML += `<td class="p-2 border-r border-slate-800 text-slate-600">-</td><td class="p-2 border-r border-slate-800 text-slate-600">-</td><td class="p-2 border-r border-slate-800 text-slate-600">-</td><td class="p-2 border-r border-slate-800 text-slate-600">0</td><td class="p-2 border-r border-slate-800 text-slate-600">0</td><td class="p-2 border-r border-slate-800 text-slate-600">0.00</td>`;
+                        tr.innerHTML += `<td colspan="6" class="p-2 border-r border-slate-800">-</td>`;
                     }
-
                     if(exp) {
                         tr.innerHTML += `
-                            <td class="p-2 border-r border-slate-800 text-slate-400">${exp.date}</td>
-                            <td class="p-2 border-r border-slate-800 font-mono text-slate-300">${exp.truck}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-400">${exp.gsm}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-400">${exp.size}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-400">${exp.sheet}</td>
-                            <td class="p-2 border-r border-slate-800 font-bold text-orange-400">${exp.pkt.toLocaleString()}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-500">${exp.ppw}</td>
-                            <td class="p-2 border-r border-slate-800 font-bold bg-orange-950/20 text-orange-400">${exp.weight.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                            <td class="p-2 border-r border-slate-800 text-slate-400">${exp.rent}</td>
-                            <td class="p-2 space-y-1">
-                                <button type="button" onclick="editExport('${currentItem}', '${imp.id}', '${exp.id}')" class="text-blue-400 hover:underline block mx-auto text-[10px]">✏️ Edit</button>
-                                <button type="button" onclick="deleteExport('${currentItem}', '${imp.id}', '${exp.id}')" class="text-red-400 hover:underline block mx-auto text-[10px]">🗑️ Del</button>
+                            <td class="p-2 border-r border-slate-800">${exp.date}</td>
+                            <td class="p-2 border-r border-slate-800">${exp.truck}</td>
+                            <td class="p-2 border-r border-slate-800">${exp.gsm}</td>
+                            <td class="p-2 border-r border-slate-800">${exp.size}</td>
+                            <td class="p-2 border-r border-slate-800">${exp.sheet}</td>
+                            <td class="p-2 border-r border-slate-800">${exp.pkt}</td>
+                            <td class="p-2 border-r border-slate-800">${exp.ppw}</td>
+                            <td class="p-2 border-r border-slate-800 font-bold text-orange-400">${exp.weight.toFixed(2)}</td>
+                            <td class="p-2 border-r border-slate-800">${exp.rent}</td>
+                            <td class="p-2">
+                                <button onclick="editExport('${currentItem}', '${imp.id}', '${exp.id}')" class="text-blue-400 text-[10px]">✏️</button>
+                                <button onclick="deleteExport('${currentItem}', '${imp.id}', '${exp.id}')" class="text-red-400 text-[10px]">🗑️</button>
                             </td>
                         `;
                     } else {
-                        tr.innerHTML += `<td colspan="10" class="p-2 border-r border-slate-800 text-slate-600 bg-slate-950/5">-</td>`;
+                        tr.innerHTML += `<td colspan="10" class="p-2 border-r border-slate-800">-</td>`;
                     }
-
                     if(i === 0) {
                         tr.innerHTML += `
-                            <td class="p-2 space-y-1 bg-slate-950/30 border-l border-slate-800" rowspan="${totalRows}">
-                                <button type="button" onclick="generateBillOfEntryPDF('${imp.id}')" class="text-emerald-400 hover:underline font-bold block mx-auto text-[10px]">🖨️ PDF</button>
-                                <button type="button" onclick="editImport('${imp.id}')" class="text-blue-400 hover:underline font-bold block mx-auto text-[10px]">⚙️ Edit</button>
-                                <button type="button" onclick="deleteImport('${imp.id}')" class="text-red-400 hover:underline font-bold block mx-auto text-[10px]">❌ Del</button>
+                            <td class="p-2 space-y-1" rowspan="${totalRows}">
+                                <button onclick="editImport('${imp.id}')" class="text-blue-400 text-[10px] block w-full">Edit</button>
+                                <button onclick="deleteImport('${imp.id}')" class="text-red-400 text-[10px] block w-full">Del</button>
                             </td>
                         `;
                     }
                     tbody.appendChild(tr);
                 }
             });
-
             document.getElementById('footImpPkt').innerText = grandImpPkt.toLocaleString();
             document.getElementById('footImpRoll').innerText = grandImpRoll.toLocaleString();
-            document.getElementById('footImpWeight').innerText = grandImpWt.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('footImpWeight').innerText = grandImpWt.toFixed(2);
             document.getElementById('footExpPkt').innerText = grandExpPkt.toLocaleString();
-            document.getElementById('footExpWeight').innerText = grandExpWt.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('footExpWeight').innerText = grandExpWt.toFixed(2);
             document.getElementById('footBalPkt').innerText = (grandImpPkt - grandExpPkt).toLocaleString();
             document.getElementById('footBalRoll').innerText = grandImpRoll.toLocaleString();
-            document.getElementById('footBalWeight').innerText = (grandImpWt - grandExpWt).toLocaleString(undefined, {minimumFractionDigits: 2}) + " kg";
+            document.getElementById('footBalWeight').innerText = (grandImpWt - grandExpWt).toFixed(2) + " kg";
         }
 
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
@@ -1406,7 +1381,6 @@
         function saveImport(e) {
             e.preventDefault(); const id = document.getElementById('editImportId').value;
             const specRows = document.getElementById('specificationsContainer').children; const specsArray = [];
-            
             for(let row of specRows) {
                 specsArray.push({
                     gsm: parseInt(row.querySelector('.spec-gsm').value), size: row.querySelector('.spec-size').value,
@@ -1414,86 +1388,52 @@
                     roll: parseInt(row.querySelector('.spec-roll').value) || 0, weight: parseFloat(row.querySelector('.spec-weight').value)
                 });
             }
-
             const newObj = {
                 id: id || "imp_" + Date.now(), sl: db[currentItem].length + 1,
                 inBond: document.getElementById('impInBond').value, beNo: document.getElementById('impBeNo').value,
                 beDate: document.getElementById('impBeDate').value, bank: document.getElementById('impBank').value,
-                lc: document.getElementById('impLc').value, 
-                ipNo: document.getElementById('impIpNo') ? document.getElementById('impIpNo').value : "", 
-                ipDate: document.getElementById('impIpDate') ? document.getElementById('impIpDate').value : "",
+                lc: document.getElementById('impLc').value, ipNo: document.getElementById('impIpNo').value, ipDate: document.getElementById('impIpDate').value,
                 specs: specsArray,
-                exports: id ? db[currentItem].find(i => i.id === id).exports : []
+                exports: id ? db[currentItem].find(i => i.id === id).exports : [],
+                bondLogs: id ? db[currentItem].find(i => i.id === id).bondLogs || [] : []
             };
-
             if(id) { const index = db[currentItem].findIndex(i => i.id === id); newObj.sl = db[currentItem][index].sl; db[currentItem][index] = newObj; } 
             else { db[currentItem].push(newObj); }
-
-            saveToLocalStorage(); buildBeDropdown(); renderLedger(); 
-            if(!document.getElementById('bondRegisterModal').classList.contains('hidden')) renderBondRegisterTable();
-            closeModal('importModal');
+            saveToLocalStorage(); buildBeDropdown(); renderLedger(); closeModal('importModal');
         }
 
         function editImport(id) {
-            const imp = db[currentItem].find(i => id === id || i.id === id);
+            const imp = db[currentItem].find(i => i.id === id);
             document.getElementById('editImportId').value = imp.id; document.getElementById('impInBond').value = imp.inBond;
             document.getElementById('impBeNo').value = imp.beNo; document.getElementById('impBeDate').value = imp.beDate;
             document.getElementById('impBank').value = imp.bank; document.getElementById('impLc').value = imp.lc;
-            if(document.getElementById('impIpNo')) document.getElementById('impIpNo').value = imp.ipNo || "";
-            if(document.getElementById('impIpDate')) document.getElementById('impIpDate').value = imp.ipDate || "";
-
+            document.getElementById('impIpNo').value = imp.ipNo || ""; document.getElementById('impIpDate').value = imp.ipDate || "";
             const container = document.getElementById('specificationsContainer'); container.innerHTML = "";
             imp.specs.forEach(s => addSpecificationRow(s.gsm, s.size, s.sheet, s.pkt, s.roll, s.weight));
-            document.getElementById('importModalTitle').innerText = "Edit Import Entry Master Group"; openModal('importModal');
+            openModal('importModal');
         }
 
         function deleteImport(id) {
-            if(confirm("Delete this Bill of Entry group?")) {
+            if(confirm("Delete this B/E group?")) {
                 db[currentItem] = db[currentItem].filter(i => i.id !== id);
                 db[currentItem].forEach((item, index) => item.sl = index + 1);
                 saveToLocalStorage(); buildBeDropdown(); renderLedger();
-                if(!document.getElementById('bondRegisterModal').classList.contains('hidden')) renderBondRegisterTable();
             }
         }
 
         function saveExport(e) {
             e.preventDefault(); const targetItem = document.getElementById('modalExpItemSelect').value;
-            const parentId = document.getElementById('modalExpBeSelect').value; const expId = document.getElementById('editExportId').value; if(!parentId) return;
-
-            const imp = db[targetItem].find(i => i.id === parentId); 
-            const calculatedWeight = parseFloat(document.getElementById('expTotalWeight').value); 
-            
-            let impTotalWt = imp.specs.reduce((sum, s) => sum + s.weight, 0); 
-            let currentUsedWt = imp.exports.reduce((sum, e) => e.id !== expId ? sum + e.weight : sum, 0);
-            
-            if((impTotalWt - currentUsedWt) < calculatedWeight) { 
-                const processNegative = confirm("⚠️ সতর্কতা: এক্সপোর্ট ওজন উপলব্ধ ইম্পোর্ট ওজনের চেয়ে বেশি হয়ে যাচ্ছে!\n\nআপনি কি নিশ্চিত যে এই অবস্থায়ও এন্ট্রিটি সেভ করে স্টক মাইনাস করতে চান?");
-                if(!processNegative) return;
-            }
-
+            const parentId = document.getElementById('modalExpBeSelect').value; const expId = document.getElementById('editExportId').value;
+            const imp = db[targetItem].find(i => i.id === parentId);
             const exportObj = {
                 id: expId || "exp_" + Date.now(), date: document.getElementById('expDate').value,
                 truck: document.getElementById('expTruck').value, gsm: parseInt(document.getElementById('expGsm').value),
                 size: document.getElementById('expSize').value, sheet: parseInt(document.getElementById('expSheet').value),
                 pkt: parseInt(document.getElementById('expPkt').value), ppw: parseFloat(document.getElementById('expPpw').value),
-                weight: calculatedWeight, rent: document.getElementById('expRent').value,
-                beExpNo: document.getElementById('expBeExpNo') ? document.getElementById('expBeExpNo').value : "",
-                beExpDate: document.getElementById('expBeExpDate') ? document.getElementById('expBeExpDate').value : "",
-                expLcNo: document.getElementById('expExpLcNo') ? document.getElementById('expExpLcNo').value : "",
-                expLcDate: document.getElementById('expExpLcDate') ? document.getElementById('expExpLcDate').value : "",
-                invNo: document.getElementById('expInvNo') ? document.getElementById('expInvNo').value : "",
-                invDate: document.getElementById('expInvDate') ? document.getElementById('expInvDate').value : "",
-                expItemNameBond: document.getElementById('expItemNameBond') ? document.getElementById('expItemNameBond').value : "",
-                expExpNo: document.getElementById('expExpNo') ? document.getElementById('expExpNo').value : "",
-                expExpDate2: document.getElementById('expExpDate2') ? document.getElementById('expExpDate2').value : "",
-                permitNo: document.getElementById('expPermitNo') ? document.getElementById('expPermitNo').value : "",
-                permitDate: document.getElementById('expPermitDate') ? document.getElementById('expPermitDate').value : ""
+                weight: parseFloat(document.getElementById('expTotalWeight').value), rent: document.getElementById('expRent').value
             };
-
             if(expId) { imp.exports[imp.exports.findIndex(ex => ex.id === expId)] = exportObj; } else { imp.exports.push(exportObj); }
-            saveToLocalStorage(); updateBeSelectorBalance(); renderLedger(); 
-            if(!document.getElementById('bondRegisterModal').classList.contains('hidden')) renderBondRegisterTable();
-            closeModal('exportModal');
+            saveToLocalStorage(); updateBeSelectorBalance(); renderLedger(); closeModal('exportModal');
         }
 
         function editExport(itemKey, impId, expId) {
@@ -1501,88 +1441,56 @@
             document.getElementById('editExportId').value = expId; document.getElementById('hiddenParentItem').value = itemKey;
             document.getElementById('modalExpItemSelect').innerHTML = `<option value="${itemKey}">${itemKey}</option>`;
             document.getElementById('modalExpBeSelect').innerHTML = `<option value="${imp.id}">${imp.beNo}</option>`;
-            document.getElementById('modalExpItemSelect').disabled = true; document.getElementById('modalExpBeSelect').disabled = true;
-
             document.getElementById('expDate').value = exp.date; document.getElementById('expTruck').value = exp.truck;
             document.getElementById('expGsm').value = exp.gsm; document.getElementById('expSize').value = exp.size;
             document.getElementById('expSheet').value = exp.sheet; document.getElementById('expPkt').value = exp.pkt;
             document.getElementById('expPpw').value = exp.ppw; document.getElementById('expTotalWeight').value = exp.weight;
             document.getElementById('expRent').value = exp.rent;
-
-            if(document.getElementById('expBeExpNo')) document.getElementById('expBeExpNo').value = exp.beExpNo || "";
-            if(document.getElementById('expBeExpDate')) document.getElementById('expBeExpDate').value = exp.beExpDate || "";
-            if(document.getElementById('expExpLcNo')) document.getElementById('expExpLcNo').value = exp.expLcNo || "";
-            if(document.getElementById('expExpLcDate')) document.getElementById('expExpLcDate').value = exp.expLcDate || "";
-            if(document.getElementById('expInvNo')) document.getElementById('expInvNo').value = exp.invNo || "";
-            if(document.getElementById('expInvDate')) document.getElementById('expInvDate').value = exp.invDate || "";
-            if(document.getElementById('expItemNameBond')) document.getElementById('expItemNameBond').value = exp.expItemNameBond || "";
-            if(document.getElementById('expExpNo')) document.getElementById('expExpNo').value = exp.expExpNo || "";
-            if(document.getElementById('expExpDate2')) document.getElementById('expExpDate2').value = exp.expExpDate2 || "";
-            if(document.getElementById('expPermitNo')) document.getElementById('expPermitNo').value = exp.permitNo || "";
-            if(document.getElementById('expPermitDate')) document.getElementById('expPermitDate').value = exp.permitDate || "";
-
-            calculateModalBeBalance(); openModal('exportModal');
+            openModal('exportModal');
         }
 
         function deleteExport(itemKey, impId, expId) {
-            if(confirm("Delete this Export log entry?")) {
+            if(confirm("Delete this Export?")) {
                 db[itemKey].find(i => i.id === impId).exports = db[itemKey].find(i => i.id === impId).exports.filter(e => e.id !== expId);
                 saveToLocalStorage(); updateBeSelectorBalance(); renderLedger();
-                if(!document.getElementById('bondRegisterModal').classList.contains('hidden')) renderBondRegisterTable();
             }
         }
-
-        window.onload = function() { 
-            document.getElementById('liveDateDisplay').innerText = "Thursday, 21 May, 2026";
-            renderTabs(); buildBeDropdown(); renderLedger(); 
-        };
     </script>
     
-    <!-- নতুন সংযোজিত কোড (লগিন এবং ক্লাউড ওভাররাইড) -->
+    <!-- AUTH & CLOUD Logic (Item manager, logout handling) -->
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAdKPpLeEg52FxbynMbLyiKQJJ7AgrkLqgQ4mwr7lIXnuFKfIOX530t3oRCasbtN4V/exec"; 
         let currentUserRole = null; 
 
-        // UI Injection (Role Selector and Separate Modals)
         document.body.insertAdjacentHTML('afterbegin', `
             <div id="authOverlay" class="fixed inset-0 bg-slate-950 z-[9999] flex items-center justify-center p-4">
-                <div id="roleSelectionView" class="glass-card p-10 rounded-3xl w-full max-w-md border border-teal-500/20 text-center transition-all duration-300">
-                    <h1 class="text-3xl font-black text-teal-400 mb-2 uppercase tracking-tight">Factory Secure</h1>
-                    <p class="text-slate-500 text-[10px] mb-8 uppercase tracking-widest">Global Ledger Synchronization</p>
+                <div id="roleSelectionView" class="glass-card p-10 rounded-3xl w-full max-w-md border border-teal-500/20 text-center">
+                    <h1 class="text-3xl font-black text-teal-400 mb-2 uppercase">Factory Secure</h1>
+                    <p class="text-slate-500 text-[10px] mb-8 uppercase">Global Ledger Synchronization</p>
                     <div class="grid grid-cols-1 gap-4">
-                        <button onclick="showLoginModal('admin')" class="bg-teal-600 hover:bg-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all uppercase tracking-widest text-xs">Admin Access</button>
-                        <button onclick="showLoginModal('user')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-4 rounded-xl shadow transition-all uppercase tracking-widest text-xs">User/Viewer Mode</button>
+                        <button onclick="showLoginModal('admin')" class="bg-teal-600 hover:bg-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all text-xs uppercase">Admin Access</button>
+                        <button onclick="showLoginModal('user')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-4 rounded-xl shadow transition-all text-xs uppercase">User Mode</button>
                     </div>
                 </div>
-
                 <div id="adminLoginModal" class="hidden glass-card p-10 rounded-3xl w-full max-w-sm border border-red-500/30 text-center">
-                    <h2 class="text-xl font-bold text-red-400 mb-6 uppercase tracking-wider">Admin Authentication</h2>
-                    <input type="password" id="adminPassInput" placeholder="PIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-red-400 text-xl font-bold mb-4 focus:outline-none focus:ring-2 focus:ring-red-500">
-                    <div class="flex gap-2">
-                        <button onclick="backToRoles()" class="flex-1 bg-slate-800 text-slate-400 py-3 rounded-xl font-bold uppercase text-[10px]">Back</button>
-                        <button onclick="performLogin('admin')" class="flex-[2] bg-red-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Login</button>
-                    </div>
+                    <h2 class="text-xl font-bold text-red-400 mb-6 uppercase">Admin Authentication</h2>
+                    <input type="password" id="adminPassInput" placeholder="PIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-red-400 text-xl mb-4 focus:outline-none">
+                    <button onclick="performLogin('admin')" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Login</button>
                 </div>
-
                 <div id="userLoginModal" class="hidden glass-card p-10 rounded-3xl w-full max-w-sm border border-teal-500/30 text-center">
-                    <h2 class="text-xl font-bold text-teal-400 mb-6 uppercase tracking-wider">User Authentication</h2>
-                    <input type="password" id="userPassInput" placeholder="PIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-teal-400 text-xl font-bold mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    <div class="flex gap-2">
-                        <button onclick="backToRoles()" class="flex-1 bg-slate-800 text-slate-400 py-3 rounded-xl font-bold uppercase text-[10px]">Back</button>
-                        <button onclick="performLogin('user')" class="flex-[2] bg-teal-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Enter Viewer</button>
-                    </div>
+                    <h2 class="text-xl font-bold text-teal-400 mb-6 uppercase">User Authentication</h2>
+                    <input type="password" id="userPassInput" placeholder="PIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-teal-400 text-xl mb-4 focus:outline-none">
+                    <button onclick="performLogin('user')" class="w-full bg-teal-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Login</button>
                 </div>
             </div>
-            <div id="syncLoader" class="fixed top-4 right-4 hidden bg-teal-600 text-white px-4 py-2 rounded-full text-[10px] font-bold animate-pulse z-[10000]">☁️ Syncing Cloud Ledger...</div>
+            <div id="syncLoader" class="fixed top-4 right-20 hidden bg-teal-600 text-white px-4 py-2 rounded-full text-[10px] font-bold animate-pulse z-[10000]">☁️ Syncing...</div>
         `);
 
-        // Logout & Item Manager UI
-        document.querySelector('.flex.flex-wrap.gap-3').insertAdjacentHTML('afterbegin', `
-            <button onclick="openItemManager()" id="manageItemsBtn" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-4 py-2.5 rounded-xl transition-all shadow-md text-xs uppercase tracking-wider">⚙️ Items</button>
-            <button onclick="handleLogout()" class="bg-slate-800/80 hover:bg-red-600 text-slate-400 hover:text-white px-4 py-2.5 rounded-xl text-xs font-bold transition border border-slate-700 uppercase tracking-widest">Logout</button>
-        `);
+        // Logout placement fix
+        document.getElementById('logoutPositioner').innerHTML = `
+            <button onclick="handleLogout()" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-4 py-2 rounded-xl text-[10px] font-bold transition border border-red-500 uppercase tracking-widest">Logout</button>
+        `;
 
-        // Item Manager Modal
         document.body.insertAdjacentHTML('beforeend', `
             <div id="itemManagerModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4 z-[10001]">
                 <div class="glass-modal max-w-md w-full rounded-2xl border border-slate-800 p-6">
@@ -1592,8 +1500,8 @@
                     </div>
                     <div class="space-y-4">
                         <div class="flex gap-2">
-                            <input type="text" id="newItemNameInput" placeholder="New Item Name..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
-                            <button onclick="addNewDynamicItem()" class="bg-teal-600 hover:bg-teal-500 px-4 py-2 rounded-xl font-bold text-xs transition">ADD</button>
+                            <input type="text" id="newItemNameInput" placeholder="New Item Name..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
+                            <button onclick="addNewDynamicItem()" class="bg-teal-600 hover:bg-teal-500 px-4 py-2 rounded-xl font-bold text-xs">ADD</button>
                         </div>
                         <div id="dynamicItemsListContainer" class="max-h-60 overflow-y-auto custom-scroll space-y-2 border-t border-slate-800 pt-4"></div>
                     </div>
@@ -1601,32 +1509,23 @@
             </div>
         `);
 
-        // 3. Logic Functions
         function showLoginModal(role) {
             document.getElementById('roleSelectionView').classList.add('hidden');
             if(role === 'admin') document.getElementById('adminLoginModal').classList.remove('hidden');
             else document.getElementById('userLoginModal').classList.remove('hidden');
         }
 
-        function backToRoles() {
-            document.getElementById('adminLoginModal').classList.add('hidden');
-            document.getElementById('userLoginModal').classList.add('hidden');
-            document.getElementById('roleSelectionView').classList.remove('hidden');
-        }
-
         async function performLogin(role) {
             const pin = role === 'admin' ? document.getElementById('adminPassInput').value : document.getElementById('userPassInput').value;
             if ((role === 'admin' && pin === "1234") || (role === 'user' && pin === "0000")) {
-                currentUserRole = role;
-                document.getElementById('authOverlay').remove();
+                currentUserRole = role; document.getElementById('authOverlay').remove();
                 await forceCloudFetch();
                 if (role === 'user') applyUserRestrictions();
-            } else { alert("Access Denied: Invalid Pin!"); }
+            } else { alert("Access Denied!"); }
         }
 
         function handleLogout() { location.reload(); }
 
-        // 4. Cloud Sync & Local Storage Removal Override
         async function forceCloudFetch() {
             document.getElementById('syncLoader').classList.remove('hidden');
             try {
@@ -1636,142 +1535,65 @@
                     db = cloudData;
                     if(db._config && db._config.itemsList) { itemsList = db._config.itemsList; }
                     renderTabs(); buildBeDropdown(); renderLedger();
-                } else {
-                    db = {"Self Adhesive Paper": [], "Duplex Board": [], "Art Card": [], "Card Board": [], "C2S Paper": []};
-                    renderTabs(); buildBeDropdown(); renderLedger();
                 }
-            } catch (e) { console.error("Cloud Error"); }
+            } catch (e) { console.error("Cloud Fetch Failed"); }
             document.getElementById('syncLoader').classList.add('hidden');
         }
 
-        // Overriding the existing save function to point only to Cloud
         saveToLocalStorage = async function() {
             if (currentUserRole !== 'admin') return; 
             document.getElementById('syncLoader').classList.remove('hidden');
             db._config = { itemsList: itemsList };
             try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(db),
-                    mode: 'no-cors'
-                });
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(db), mode: 'no-cors' });
                 setTimeout(() => document.getElementById('syncLoader').classList.add('hidden'), 800);
             } catch (e) { alert("Sync Error!"); }
         };
 
-        // 5. Wastage Field Injection & Save logic override
-        const originalAddSpec = addSpecificationRow;
-        addSpecificationRow = function(gsm='', size='', sheet='', pkt='', roll='', weight='', wastage='') {
-            const container = document.getElementById('specificationsContainer');
-            const rowId = "row_" + Date.now() + Math.random().toString(36).substr(2, 4);
-            const div = document.createElement('div'); div.id = rowId;
-            div.className = "grid grid-cols-2 md:grid-cols-8 gap-2 p-2.5 items-center border-b border-slate-800/40 bg-slate-900/40";
-            div.innerHTML = `
-                <div><input type="number" placeholder="GSM" value="${gsm}" required class="spec-gsm w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
-                <div><input type="text" placeholder="Size" value="${size}" required class="spec-size w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
-                <div><input type="number" placeholder="Sheet" value="${sheet}" required class="spec-sheet w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
-                <div><input type="number" placeholder="Pkt" value="${pkt}" required class="spec-pkt w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
-                <div><input type="number" placeholder="Roll" value="${roll}" required class="spec-roll w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
-                <div><input type="number" step="0.01" placeholder="Weight" value="${weight}" required class="spec-weight w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
-                <div><input type="number" placeholder="Wastage" value="${wastage}" class="spec-wastage w-full bg-orange-900/30 text-orange-400 border border-orange-500/20 rounded-lg px-2 py-1 text-xs" title="Production Wastage"></div>
-                <div class="text-right"><button type="button" onclick="document.getElementById('${rowId}').remove()" class="text-red-400 hover:text-red-500 font-bold px-2 text-xs">❌</button></div>
-            `;
-            container.appendChild(div);
-        };
-
-        saveImport = function(e) {
-            e.preventDefault(); const id = document.getElementById('editImportId').value;
-            const specRows = document.getElementById('specificationsContainer').children; const specsArray = [];
-            for(let row of specRows) {
-                specsArray.push({
-                    gsm: parseInt(row.querySelector('.spec-gsm').value), size: row.querySelector('.spec-size').value,
-                    sheet: parseInt(row.querySelector('.spec-sheet').value), pkt: parseInt(row.querySelector('.spec-pkt').value) || 0,
-                    roll: parseInt(row.querySelector('.spec-roll').value) || 0, weight: parseFloat(row.querySelector('.spec-weight').value),
-                    wastage: parseInt(row.querySelector('.spec-wastage').value) || 0
-                });
-            }
-            const newObj = {
-                id: id || "imp_" + Date.now(), sl: (db[currentItem] ? db[currentItem].length : 0) + 1,
-                inBond: document.getElementById('impInBond').value, beNo: document.getElementById('impBeNo').value,
-                beDate: document.getElementById('impBeDate').value, bank: document.getElementById('impBank').value,
-                lc: document.getElementById('impLc').value,
-                ipNo: document.getElementById('impIpNo') ? document.getElementById('impIpNo').value : "",
-                ipDate: document.getElementById('impIpDate') ? document.getElementById('impIpDate').value : "",
-                specs: specsArray,
-                exports: id ? db[currentItem].find(i => i.id === id).exports : []
-            };
-            if(id) { const index = db[currentItem].findIndex(i => i.id === id); db[currentItem][index] = newObj; } 
-            else { if(!db[currentItem]) db[currentItem] = []; db[currentItem].push(newObj); }
-            saveToLocalStorage(); buildBeDropdown(); renderLedger(); 
-            if(!document.getElementById('bondRegisterModal').classList.contains('hidden')) renderBondRegisterTable();
-            closeModal('importModal');
-        };
-
-        // 6. Dynamic Item Management
-        function openItemManager() {
-            refreshItemManagerList();
-            openModal('itemManagerModal');
-        }
-
+        function openItemManager() { refreshItemManagerList(); openModal('itemManagerModal'); }
         function refreshItemManagerList() {
-            const list = document.getElementById('dynamicItemsListContainer');
-            list.innerHTML = "";
+            const list = document.getElementById('dynamicItemsListContainer'); list.innerHTML = "";
             itemsList.forEach(item => {
                 const div = document.createElement('div');
                 div.className = "flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800";
-                div.innerHTML = `
-                    <span class="text-xs font-bold text-slate-300 uppercase">${item}</span>
-                    <button onclick="deleteDynamicItem('${item}')" class="bg-red-950/30 hover:bg-red-600 text-red-500 hover:text-white px-2 py-1 rounded-lg text-[9px] font-bold transition">DELETE</button>
-                `;
+                div.innerHTML = `<span class="text-xs font-bold text-slate-300 uppercase">${item}</span>
+                    <button onclick="deleteDynamicItem('${item}')" class="text-red-500 text-[9px] font-bold">DELETE</button>`;
                 list.appendChild(div);
             });
         }
 
         function addNewDynamicItem() {
             const name = document.getElementById('newItemNameInput').value.trim();
-            if(!name) return;
-            if(itemsList.includes(name)) return alert("Item exists!");
-            itemsList.push(name);
-            if(!db[name]) db[name] = [];
-            if(!itemThemeMap[name]) { itemThemeMap[name] = { base: "bg-teal-500/5", border: "border-teal-500/20", dark: "bg-teal-950/40", text: "text-teal-400" }; }
+            if(!name || itemsList.includes(name)) return alert("Invalid or Duplicate Item!");
+            itemsList.push(name); if(!db[name]) db[name] = [];
             document.getElementById('newItemNameInput').value = "";
             saveToLocalStorage(); renderTabs(); refreshItemManagerList();
         }
 
         function deleteDynamicItem(item) {
             if(confirm(`Delete "${item}"?`)) {
-                itemsList = itemsList.filter(i => i !== item);
-                delete db[item];
+                itemsList = itemsList.filter(i => i !== item); delete db[item];
                 if(currentItem === item) currentItem = itemsList[0] || "";
                 saveToLocalStorage(); renderTabs(); buildBeDropdown(); renderLedger(); refreshItemManagerList();
             }
         }
 
         function applyUserRestrictions() {
-            const css = `
-                button[onclick*="openImportModalNew"], button[onclick*="openExportModalNew"], 
-                button[onclick*="editImport"], button[onclick*="deleteImport"],
-                button[onclick*="editExport"], button[onclick*="deleteExport"],
-                #importForm button[type="submit"], #exportForm button[type="submit"], #manageItemsBtn {
-                    display: none !important;
-                }
-            `;
-            const style = document.createElement('style');
-            style.appendChild(document.createTextNode(css));
-            document.head.appendChild(style);
+            const css = `button[onclick*="openImportModalNew"], button[onclick*="openExportModalNew"], button[onclick*="editImport"], button[onclick*="deleteImport"], button[onclick*="editExport"], button[onclick*="deleteExport"], button[onclick*="openManualBondExportModal"], button[onclick*="openItemManager"] { display: none !important; }`;
+            const style = document.createElement('style'); style.appendChild(document.createTextNode(css)); document.head.appendChild(style);
         }
 
-        // 7. LC Summary Fix + Bond Balance Label included
+        // Updated LC Summary Logic Override to include Bond Balance Weight Column
         const baseRenderLcSummary = renderLcSummaryDashboard;
         renderLcSummaryDashboard = function() {
-            const tbody = document.getElementById('lcSummaryBody'); 
-            const tfoot = document.getElementById('lcSummaryFoot');
-            const filterValue = document.getElementById('lcStatusFilter').value;
+            const tbody = document.getElementById('lcSummaryBody'); const tfoot = document.getElementById('lcSummaryFoot');
+            const filterValue = document.getElementById('lcStatusFilter').value; 
             tbody.innerHTML = ""; tfoot.innerHTML = "";
 
             let globalImpPkt = 0, globalImpRoll = 0, globalImpWt = 0;
             let globalExpPkt = 0, globalExpWt = 0;
             let globalBalPkt = 0, globalBalRoll = 0, globalBalWt = 0;
+            let globalBondBalWt = 0;
 
             itemsList.forEach(item => {
                 let imports = db[item] || []; if (imports.length === 0) return;
@@ -1781,12 +1603,13 @@
                     let balPkt = impPkt - expPkt;
                     if (filterValue === "ACTIVE") return balPkt > 0;
                     if (filterValue === "CLOSED") return balPkt <= 0;
-                    return true;
+                    return true; 
                 });
 
                 if (filteredImports.length === 0) return;
                 let subImpPkt = 0, subImpRoll = 0, subImpWt = 0;
                 let subExpPkt = 0, subExpWt = 0; let subBalPkt = 0, subBalRoll = 0, subBalWt = 0;
+                let subBondBalWt = 0;
 
                 const theme = itemThemeMap[item] || { base: "bg-teal-500/5", border: "border-teal-500/20", dark: "bg-teal-950/40", text: "text-teal-400" }; 
                 const totalRowspan = filteredImports.length + 1; 
@@ -1799,32 +1622,34 @@
                     let expWt = imp.exports.reduce((sum, e) => sum + e.weight, 0);
                     let balPkt = impPkt - expPkt; let balRoll = impRoll; let balWt = impWt - expWt;
 
+                    // Manual Bond Register Calculation Logic
+                    let bondExpWt = (imp.bondLogs || []).reduce((sum, l) => sum + l.weight, 0);
+                    let bondBalWt = impWt - bondExpWt;
+
                     subImpPkt += impPkt; subImpRoll += impRoll; subImpWt += impWt;
                     subExpPkt += expPkt; subExpWt += expWt;
                     subBalPkt += balPkt; subBalRoll += balRoll; subBalWt += balWt;
+                    subBondBalWt += bondBalWt;
 
                     const tr = document.createElement('tr');
-                    tr.className = `border-b border-slate-800/80 hover:bg-slate-800/40 transition text-slate-200`;
-
-                    // Coloring logic applied only to non-item cells
-                    let statusBg = (balPkt <= 0) ? "bg-red-600 text-white font-bold" : "";
-                    let balPktStyle = (balPkt <= 0) ? "text-white font-black" : "text-emerald-400 font-bold";
+                    let statusClass = (balPkt <= 0) ? "bg-red-600 text-white" : `${theme.base} text-slate-200`;
+                    tr.className = `border-b border-slate-800/80 hover:bg-slate-800/40 transition ${statusClass}`;
 
                     if (index === 0) {
-                        tr.innerHTML += `<td class="p-2.5 text-left pl-4 border-r border-slate-800 font-bold uppercase ${theme.text} ${theme.dark}" rowspan="${totalRowspan}">📂 ${item}</td>`;
+                        tr.innerHTML += `<td class="p-2.5 text-left pl-4 border-r border-slate-800 font-bold uppercase ${theme.dark} ${theme.text}" rowspan="${totalRowspan}">📂 ${item}</td>`;
                     }
-
                     tr.innerHTML += `
-                        <td onclick="navigateToItem('${item}', '${imp.id}')" class="p-2.5 border-r border-slate-800 font-bold cursor-pointer ${statusBg} underline font-mono hover:text-cyan-400 transition-colors" title="View Details in Ledger">${imp.beNo}</td>
-                        <td onclick="navigateToItem('${item}', '${imp.id}')" class="p-2.5 border-r border-slate-800 cursor-pointer ${statusBg}">${imp.lc}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${statusBg}">${impPkt.toLocaleString()}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${statusBg}">${impRoll.toLocaleString()}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${statusBg}">${impWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${statusBg}">${expPkt.toLocaleString()}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${statusBg}">${expWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${statusBg} ${balPktStyle}">${balPkt.toLocaleString()}</td>
-                        <td class="p-2.5 border-r border-slate-800 ${statusBg} ${balPktStyle}">${balRoll.toLocaleString()}</td>
-                        <td class="p-2.5 ${statusBg} ${balPktStyle}">${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}<br><span class="text-[9px] text-cyan-200 font-normal">Bond Bal: ${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></td>
+                        <td onclick="navigateToItem('${item}', '${imp.id}')" class="p-2.5 border-r border-slate-800 font-bold cursor-pointer underline">${imp.beNo}</td>
+                        <td class="p-2.5 border-r border-slate-800">${imp.lc}</td>
+                        <td class="p-2.5 border-r border-slate-800">${impPkt.toLocaleString()}</td>
+                        <td class="p-2.5 border-r border-slate-800">${impRoll.toLocaleString()}</td>
+                        <td class="p-2.5 border-r border-slate-800">${impWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td class="p-2.5 border-r border-slate-800">${expPkt.toLocaleString()}</td>
+                        <td class="p-2.5 border-r border-slate-800">${expWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td class="p-2.5 border-r border-slate-800 font-bold">${balPkt.toLocaleString()}</td>
+                        <td class="p-2.5 border-r border-slate-800 font-bold">${balRoll.toLocaleString()}</td>
+                        <td class="p-2.5 border-r border-slate-800 font-bold">${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        <td class="p-2.5 font-bold text-indigo-400">${bondBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -1839,12 +1664,14 @@
                     <td class="p-2 border-r border-slate-800">${subExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                     <td class="p-2 border-r border-slate-800 text-emerald-400">${subBalPkt.toLocaleString()}</td>
                     <td class="p-2 border-r border-slate-800 text-emerald-400">${subBalRoll.toLocaleString()}</td>
-                    <td class="p-2 text-emerald-400 bg-emerald-500/10">${subBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}<br><span class="text-[9px] text-cyan-400 font-normal">Bond Bal: ${subBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></td>
+                    <td class="p-2 border-r border-slate-800 text-emerald-400 bg-emerald-500/10">${subBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                    <td class="p-2 text-indigo-300 bg-indigo-500/10">${subBondBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                 `;
                 tbody.appendChild(totalTr);
 
                 globalImpPkt += subImpPkt; globalImpRoll += subImpRoll; globalImpWt += subImpWt;
                 globalExpPkt += subExpPkt; globalExpWt += subExpWt; globalBalPkt += subBalPkt; globalBalRoll += subBalRoll; globalBalWt += subBalWt;
+                globalBondBalWt += subBondBalWt;
             });
 
             tfoot.innerHTML = `
@@ -1856,16 +1683,14 @@
                     <td class="p-3 font-bold text-orange-400">${globalExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
                     <td class="p-3 text-emerald-400 font-black">${globalBalPkt.toLocaleString()}</td>
                     <td class="p-3 text-emerald-400 font-black">${globalBalRoll.toLocaleString()}</td>
-                    <td class="p-3 text-emerald-400 font-black text-xs bg-emerald-500/20">${globalBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg<br><span class="text-[9px] text-cyan-400 font-normal tracking-wide">Bond Bal: ${globalBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></td>
+                    <td class="p-3 text-emerald-400 font-black text-xs bg-emerald-500/20">${globalBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
+                    <td class="p-3 text-indigo-400 font-black text-xs bg-indigo-500/20">${globalBondBalWt.toLocaleString(undefined, {minimumFractionDigits: 2})} kg</td>
                 </tr>`;
         }
 
-        // Prevent unauthorized app loading
         window.onload = function() { 
             document.getElementById('liveDateDisplay').innerText = "Thursday, 21 May, 2026";
-            setInterval(() => {
-                document.getElementById('liveTime').innerText = new Date().toLocaleTimeString();
-            }, 1000);
+            renderTabs(); buildBeDropdown(); renderLedger(); 
         };
     </script>
 </body>
