@@ -2,14 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Advanced Factory Stock Inventory Ledger</title>
+    
+    <!-- PWA & Mobile Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2897/2897808.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
             color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
         }
         /* Glassmorphism Design Styles */
         .glass-card {
@@ -42,10 +51,10 @@
 
         /* PRINT & PDF GENERATION OPTIMIZATION STYLE */
         @media print {
-            .no-print { display: none !important; }
+            .no-print, #logoutPositioner { display: none !important; }
             @page {
                 size: A4 landscape;
-                margin: 12mm 10mm 12mm 10mm;
+                margin: 8mm 10mm 12mm 10mm;
             }
             body {
                 background: #ffffff !important;
@@ -55,8 +64,9 @@
             }
             #printLayoutContainer {
                 display: block !important;
+                visibility: visible !important;
             }
-            .max-w-\[1650px\], #dashboardModal, #lcSummaryModal, #importModal, #exportModal, #bondRegisterModal {
+            .max-w-\[1650px\], #dashboardModal, #lcSummaryModal, #importModal, #exportModal, #bondRegisterModal, #itemManagerModal, #authOverlay, #bondExportModal {
                 display: none !important;
             }
             table {
@@ -70,81 +80,62 @@
                 page-break-after: auto !important;
             }
             th, td {
-                border: 1px solid #475569 !important;
-                padding: 5px !important;
-                color: #000000 !important;
+                border: 1px solid #000 !important;
+                padding: 4px !important;
+                color: #000 !important;
                 background: transparent !important;
                 font-size: 8pt !important;
             }
             th {
                 background-color: #f1f5f9 !important;
                 font-weight: bold !important;
-            }
-            .text-blue-400, .text-orange-400, .text-emerald-400, .text-amber-400 {
-                color: #000000 !important;
-            }
-            .print-status-running {
-                background-color: #16a34a !important;
-                color: #ffffff !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                padding: 2px 8px !important;
-                border-radius: 4px !important;
-                font-weight: bold !important;
-            }
-            .print-status-close {
-                background-color: #dc2626 !important;
-                color: #ffffff !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                padding: 2px 8px !important;
-                border-radius: 4px !important;
-                font-weight: bold !important;
+                text-transform: uppercase;
             }
             
             /* BOND REGISTER PRINT OVERRIDE */
-            body.printing-bond * {
-                visibility: hidden;
-            }
-            body.printing-bond #bondRegisterPrintArea, body.printing-bond #bondRegisterPrintArea * {
-                visibility: visible;
-            }
             body.printing-bond #bondRegisterPrintArea {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
+                display: block !important;
+                visibility: visible !important;
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                z-index: 9999 !important;
                 background: white !important;
                 color: black !important;
             }
+            body.printing-bond .max-w-\[1650px\], body.printing-bond .fixed, body.printing-bond #bondRegisterModal {
+                display: none !important;
+            }
         }
+        .print-footer { display: none; }
     </style>
 </head>
 <body class="p-3 md:p-6 text-xs font-sans relative">
 
     <!-- Logout Button Container (Top Right) -->
-    <div id="logoutPositioner" class="absolute top-4 right-4 z-[100]"></div>
+    <div id="logoutPositioner" class="absolute top-4 right-4 z-[100] no-print"></div>
 
     <div class="max-w-[1650px] mx-auto space-y-6 relative z-10">
         
         <!-- Header Section Updated: Centered Org Name & Centered Buttons -->
         <div class="glass-card rounded-2xl p-6 text-center relative flex flex-col items-center gap-6">
             <div class="text-center">
-                <h1 class="text-3xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500 uppercase">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
-                <p class="text-slate-400 font-medium text-[12px] tracking-wide mt-1">Plot No: 49 & 50, Mongla EPZ, Mongla(9351), Bagerhat, Khulna, Bangladesh.</p>
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500 uppercase">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
+                <p class="text-slate-400 font-medium text-[11px] md:text-[12px] tracking-wide mt-1">Plot No: 49 & 50, Mongla EPZ, Mongla(9351), Bagerhat, Khulna, Bangladesh.</p>
                 <div class="mt-2 text-slate-500 font-bold text-sm">
                     <span id="liveTime">00:00:00 AM</span> | <span id="liveDateDisplay">Wednesday, 20 May, 2026</span>
                 </div>
             </div>
             
-            <div class="flex flex-wrap justify-center gap-4 bg-slate-900/40 p-4 rounded-2xl border border-slate-700/50 shadow-inner">
-                <button onclick="openDashboardModal()" class="bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-slate-200 hover:text-white border border-slate-600 font-bold px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4 bg-slate-900/40 p-3 md:p-4 rounded-2xl border border-slate-700/50 shadow-inner">
+                <button onclick="openDashboardModal()" class="bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-slate-200 hover:text-white border border-slate-600 font-bold px-4 md:px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-wider">
                     📊 Stock Dashboard
                 </button>
-                <button onclick="openLcSummaryModal()" class="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
+                <button onclick="openLcSummaryModal()" class="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold px-4 md:px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-wider">
                     🔍 View LC Summary
                 </button>
-                <button onclick="openBondRegisterModal()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-xs uppercase tracking-wider">
+                <button onclick="openBondRegisterModal()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold px-4 md:px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-wider">
                     📖 Bond Register
                 </button>
             </div>
@@ -160,8 +151,8 @@
                     <span class="absolute right-2.5 top-2 text-slate-500">🔍</span>
                     <div id="globalSearchDropdown" class="absolute top-full left-0 mt-1 w-full bg-slate-800 border border-slate-600 rounded-xl shadow-2xl hidden z-[1000] max-h-60 overflow-y-auto custom-scroll"></div>
                 </div>
-                <button onclick="openImportModalNew()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-md w-full sm:w-auto">+ Import Entry</button>
-                <button onclick="openExportModalNew()" class="bg-orange-500 hover:bg-orange-400 text-white font-bold px-4 py-2 rounded-xl transition shadow-md w-full sm:w-auto">+ Export Entry</button>
+                <button onclick="openImportModalNew()" class="admin-only bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-md w-full sm:w-auto">+ Import Entry</button>
+                <button onclick="openExportModalNew()" class="admin-only bg-orange-500 hover:bg-orange-400 text-white font-bold px-4 py-2 rounded-xl transition shadow-md w-full sm:w-auto">+ Export Entry</button>
             </div>
         </div>
 
@@ -212,11 +203,11 @@
                         <tr class="bg-slate-950/80 text-slate-300 text-center font-bold border-b border-slate-800">
                             <th colspan="12" class="py-2.5 border-r border-slate-800 bg-slate-950/60 uppercase tracking-wider text-blue-400">Import Information</th>
                             <th colspan="9" class="py-2.5 bg-slate-900/60 uppercase tracking-wider text-orange-400">Export Information</th>
-                            <th rowspan="2" class="p-2 bg-slate-950 border-l border-slate-800 w-28 uppercase text-[10px]">Actions</th>
+                            <th rowspan="2" class="admin-only p-2 bg-slate-950 border-l border-slate-800 w-28 uppercase text-[10px]">Actions</th>
                         </tr>
                         <tr class="bg-slate-800/60 text-slate-300 text-center font-bold border-b border-slate-700">
                             <th class="p-2 border-r border-slate-700 w-10">SL</th>
-                            <th class="p-2 border-r border-slate-700">In Bond</th>
+                            <th class="p-2 border-r border-slate-700">In Bond / Date</th>
                             <th class="p-2 border-r border-slate-700 text-amber-400">B/E No</th>
                             <th class="p-2 border-r border-slate-700">B/E Date</th>
                             <th class="p-2 border-r border-slate-700">Bank Name</th>
@@ -370,10 +361,16 @@
                         <p class="text-[10px] text-slate-500">Official Regulatory Customs Bond Record</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 flex-wrap no-print">
+                    <div class="flex items-center gap-2 bg-slate-900 p-1 rounded-xl border border-slate-700">
+                        <span class="text-[10px] text-slate-500 pl-2">FROM</span>
+                        <input type="date" id="bondDateStart" onchange="renderBondRegisterTable()" class="bg-transparent text-teal-400 font-bold text-xs focus:outline-none">
+                        <span class="text-[10px] text-slate-500">TO</span>
+                        <input type="date" id="bondDateEnd" onchange="renderBondRegisterTable()" class="bg-transparent text-teal-400 font-bold text-xs focus:outline-none pr-2">
+                    </div>
                     <select id="bondItemFilter" onchange="updateBondBeDropdown()" class="bg-slate-900 border border-slate-700 text-teal-400 rounded-xl px-3 py-1.5 font-bold focus:outline-none text-xs"></select>
                     <select id="bondBeFilter" onchange="renderBondRegisterTable()" class="bg-slate-900 border border-slate-700 text-teal-400 rounded-xl px-3 py-1.5 font-bold focus:outline-none text-xs"></select>
-                    <button onclick="openManualBondExportModal()" class="bg-orange-500 hover:bg-orange-400 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition">➕ Add Manual Bond Export</button>
+                    <button onclick="openManualBondExportModal()" class="admin-only bg-orange-500 hover:bg-orange-400 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition">➕ Add Manual Bond Export</button>
                     <button onclick="printBondRegister()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition">🖨️ Print View</button>
                     <button onclick="closeModal('bondRegisterModal')" class="bg-slate-900 text-slate-400 hover:text-white border border-slate-700 hover:bg-red-600 px-3 py-1.5 rounded-xl text-xs font-bold transition">❌ Close</button>
                 </div>
@@ -386,22 +383,34 @@
                     .bond-table .bg-blue-h { background-color: #e0f2fe; }
                     .bond-table .bg-orange-h { background-color: #ffedd5; }
                 </style>
-                <div class="text-center mb-4 text-black">
-                    <h1 class="text-lg font-bold uppercase tracking-wide">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
-                    <p class="text-xs">Plot No: 49 & 50, Mongla EPZ, Mongla (9351), Bagerhat, Khulna, Bangladesh.</p>
-                    <h2 class="text-md font-bold underline mt-2 uppercase text-indigo-900" id="bondRegisterItemTitle">Item Name</h2>
+                <div class="relative mb-4 text-black">
+                    <!-- TOP RIGHT PRINT BADGE -->
+                    <div id="bondPrintTopBadge" class="absolute top-0 right-0 text-right">
+                        <div class="inline-block bg-slate-100 border border-slate-300 rounded-lg px-3 py-1.5 shadow-sm">
+                            <p class="text-[8px] uppercase font-bold text-slate-500 tracking-wider">Report Generated On</p>
+                            <p class="text-[10px] font-black text-slate-900" id="bondHeaderPrintTime"></p>
+                        </div>
+                    </div>
+
+                    <div class="text-center pt-2">
+                        <h1 class="text-lg font-bold uppercase tracking-wide">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
+                        <p class="text-xs">Plot No: 49 & 50, Mongla EPZ, Mongla (9351), Bagerhat, Khulna, Bangladesh.</p>
+                        <h2 class="text-md font-bold underline mt-2 uppercase text-indigo-900" id="bondRegisterItemTitle">Item Name</h2>
+                        <p class="text-[10px] mt-1 font-bold" id="bondPrintDateRange"></p>
+                    </div>
                 </div>
                 <table class="bond-table">
                     <thead>
                         <tr>
-                            <th colspan="8" class="bg-blue-h">Import Information</th>
+                            <th colspan="9" class="bg-blue-h">Import Information</th>
                             <th colspan="8" class="bg-orange-h">Export Information</th>
-                            <th rowspan="2" class="no-print w-16 bg-slate-200">Action</th>
+                            <th rowspan="2" class="admin-only no-print w-16 bg-slate-200">Action</th>
                         </tr>
                         <tr>
                             <th>SL</th>
                             <th>Import Bond</th>
-                            <th>In Bond</th>
+                            <th>In Bond No</th>
+                            <th>In Bond Date</th>
                             <th>Bill of Entry & Date</th>
                             <th>IP No & Date</th>
                             <th>Bank Name</th>
@@ -441,6 +450,10 @@
                         <input type="text" id="impInBond" required class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-teal-500">
                     </div>
                     <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">In Bond Date</label>
+                        <input type="date" id="impInBondDate" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-teal-500">
+                    </div>
+                    <div>
                         <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Bill of Entry No</label>
                         <input type="text" id="impBeNo" required class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-teal-500">
                     </div>
@@ -452,13 +465,13 @@
                         <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">Bank Name</label>
                         <input type="text" id="impBank" required class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-teal-500">
                     </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3 bg-slate-950/40 p-4 rounded-xl border border-slate-800 border-t-0 mt-0">
                     <div>
                         <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">LC Number</label>
                         <input type="text" id="impLc" required class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-teal-500">
                     </div>
-                </div>
-                
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-3 bg-slate-950/40 p-4 rounded-xl border border-slate-800 border-t-0 mt-0">
                     <div>
                         <label class="block text-[9px] uppercase font-bold text-slate-500 mb-1">IP No (Bond Info)</label>
                         <input type="text" id="impIpNo" class="w-full bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-teal-500">
@@ -472,7 +485,7 @@
                 <div>
                     <div class="flex justify-between items-center mb-2">
                         <span class="font-bold text-slate-400 text-xs uppercase tracking-wider">📦 Items Specification List</span>
-                        <button type="button" onclick="addSpecificationRow()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold px-3 py-1 rounded-lg text-xs">+ Add Row</button>
+                        <button type="button" onclick="addSpecificationRow()" class="admin-only bg-teal-600 hover:bg-teal-500 text-white font-bold px-3 py-1 rounded-lg text-xs">+ Add Row</button>
                     </div>
                     <div class="max-h-[220px] overflow-y-auto border border-slate-800 rounded-xl divide-y divide-slate-800/60 shadow-inner bg-slate-950/20" id="specificationsContainer">
                     </div>
@@ -659,10 +672,10 @@
         let db = JSON.parse(localStorage.getItem('factory_multi_db')) || {
             "Self Adhesive Paper": [
                 {
-                    id: "imp_1", sl: 1, inBond: "01-03-2026", beNo: "C 806052", beDate: "20-02-2026", bank: "Jamuna", lc: "11", ipNo: "IC1802260002", ipDate: "18-02-2026",
+                    id: "imp_1", sl: 1, inBond: "B-2026-101", inBondDate: "2026-03-01", beNo: "C 806052", beDate: "2026-02-20", bank: "Jamuna", lc: "11", ipNo: "IC1802260002", ipDate: "2026-02-18",
                     specs: [{ gsm: 172, size: "20 × 30", sheet: 100, pkt: 8000, roll: 2, weight: 52800.00 }],
                     exports: [],
-                    bondLogs: [] // Separated Manual Bond Ledger array
+                    bondLogs: [] 
                 }
             ],
             "Duplex Board": [], "Art Card": [], "Card Board": [], "C2S Paper": []
@@ -765,7 +778,16 @@
         function renderBondRegisterTable() {
             const itemKey = document.getElementById('bondItemFilter').value;
             const beId = document.getElementById('bondBeFilter').value;
+            const startDate = document.getElementById('bondDateStart').value;
+            const endDate = document.getElementById('bondDateEnd').value;
+            
             document.getElementById('bondRegisterItemTitle').innerText = itemKey;
+            
+            if(startDate && endDate) {
+                document.getElementById('bondPrintDateRange').innerText = `Period: ${startDate} to ${endDate}`;
+            } else {
+                document.getElementById('bondPrintDateRange').innerText = "";
+            }
             
             const tbody = document.getElementById('bondRegisterBody');
             const tfoot = document.getElementById('bondRegisterFoot');
@@ -778,9 +800,16 @@
             let grandExpWt = 0;
 
             imports.forEach((imp, impIndex) => {
-                // Now using bondLogs for Manual entries
-                const bondLogs = imp.bondLogs || [];
-                const totalRows = Math.max(1, bondLogs.length);
+                let rawLogs = imp.bondLogs || [];
+                let filteredLogs = rawLogs.filter(log => {
+                    if(!startDate && !endDate) return true;
+                    let logDate = log.date; 
+                    if(startDate && logDate < startDate) return false;
+                    if(endDate && logDate > endDate) return false;
+                    return true;
+                });
+
+                const totalRows = Math.max(1, filteredLogs.length);
                 let impTotalWt = imp.specs.reduce((sum, s) => sum + s.weight, 0);
                 grandImpWt += impTotalWt;
 
@@ -791,6 +820,7 @@
                             <td rowspan="${totalRows}">${imp.sl || (impIndex + 1)}</td>
                             <td rowspan="${totalRows}"></td>
                             <td rowspan="${totalRows}">${imp.inBond || ''}</td>
+                            <td rowspan="${totalRows}">${imp.inBondDate || ''}</td>
                             <td rowspan="${totalRows}">${imp.beNo || ''}<br>${imp.beDate || ''}</td>
                             <td rowspan="${totalRows}">${imp.ipNo || ''}<br>${imp.ipDate || ''}</td>
                             <td rowspan="${totalRows}">${imp.bank || ''}</td>
@@ -799,7 +829,7 @@
                         `;
                     }
                     
-                    const log = bondLogs[i];
+                    const log = filteredLogs[i];
                     if(log) {
                         grandExpWt += log.weight;
                         tr.innerHTML += `
@@ -816,7 +846,11 @@
                         tr.innerHTML += `<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>`;
                     }
                     
-                    let actionCell = `<td class="no-print bg-slate-50"><div class="flex flex-col gap-1 items-center justify-center">`;
+                    let actionCell = `<td class="admin-only no-print bg-slate-50"><div class="flex flex-col gap-1 items-center justify-center">`;
+                    if(i === 0) {
+                        actionCell += `<button onclick="editImport('${imp.id}')" class="bg-blue-600 text-white px-2 py-0.5 rounded font-bold text-[8px] uppercase">Master Edit</button>`;
+                        actionCell += `<button onclick="deleteImport('${imp.id}')" class="bg-red-600 text-white px-2 py-0.5 rounded font-bold text-[8px] uppercase">Master Del</button><hr class="w-full border-slate-300 my-1">`;
+                    }
                     if (log) {
                         actionCell += `<button onclick="editBondManualLog('${itemKey}', '${imp.id}', '${log.id}')" class="text-blue-600 hover:text-blue-800 font-bold text-[10px]">✏️ Edit</button>`;
                         actionCell += `<button onclick="deleteBondManualLog('${itemKey}', '${imp.id}', '${log.id}')" class="text-red-600 hover:text-red-800 font-bold text-[10px]">🗑️ Del</button>`;
@@ -830,18 +864,19 @@
             let balWt = grandImpWt - grandExpWt;
             tfoot.innerHTML = `
                 <tr>
-                    <th colspan="7" style="text-align:right;">Total Import Weight:</th>
+                    <th colspan="8" style="text-align:right;">Total Import Weight:</th>
                     <th>${grandImpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</th>
                     <th colspan="7" style="text-align:right;">Total Bond Exported Weight:</th>
                     <th>${grandExpWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</th>
-                    <th class="no-print"></th>
+                    <th class="admin-only no-print"></th>
                 </tr>
                 <tr>
-                    <th colspan="15" style="text-align:right; color:#0f766e; font-size:12px;">MANUAL BOND REGISTER BALANCE:</th>
+                    <th colspan="16" style="text-align:right; color:#0f766e; font-size:12px;">MANUAL BOND REGISTER BALANCE:</th>
                     <th style="background-color:#115e59; color:#fff; font-size:12px;">${balWt.toLocaleString(undefined, {minimumFractionDigits: 2})}</th>
-                    <th class="no-print"></th>
+                    <th class="admin-only no-print"></th>
                 </tr>
             `;
+            document.getElementById('bondHeaderPrintTime').innerText = new Date().toLocaleString('en-GB', { hour12: true, day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
         }
 
         function openManualBondExportModal() {
@@ -925,7 +960,9 @@
         function printBondRegister() {
             document.body.classList.add('printing-bond');
             window.print();
-            document.body.classList.remove('printing-bond');
+            setTimeout(() => {
+                document.body.classList.remove('printing-bond');
+            }, 500);
         }
 
         function renderDashboardSummary() {
@@ -1022,7 +1059,6 @@
                     let expWt = imp.exports.reduce((sum, e) => sum + e.weight, 0);
                     let balPkt = impPkt - expPkt; let balRoll = impRoll; let balWt = impWt - expWt;
                     
-                    // Calculation for Bond Balance
                     let bondExpWt = (imp.bondLogs || []).reduce((sum, l) => sum + l.weight, 0);
                     let bondBalWt = impWt - bondExpWt;
 
@@ -1093,14 +1129,13 @@
             tabContainer.innerHTML = "";
             itemsList.forEach(item => {
                 const btn = document.createElement('button'); btn.innerText = item;
-                btn.className = `px-4 py-2 font-bold rounded-xl text-xs transition-all duration-150 ${item === currentItem ? 'bg-gradient-to-r from-slate-800 to-slate-700 text-white shadow border border-slate-600' : 'bg-slate-900/60 hover:bg-slate-800 text-slate-400'}`;
+                btn.className = `px-4 py-2 font-bold rounded-xl text-[10px] md:text-xs transition-all duration-150 ${item === currentItem ? 'bg-gradient-to-r from-slate-800 to-slate-700 text-white shadow border border-slate-600' : 'bg-slate-900/60 hover:bg-slate-800 text-slate-400'}`;
                 btn.onclick = () => { currentItem = item; renderTabs(); buildBeDropdown(); renderLedger(); };
                 tabContainer.appendChild(btn);
             });
-            // Add Item button right next to tabs
             const addBtn = document.createElement('button');
             addBtn.innerHTML = "⚙️ Add Item";
-            addBtn.className = "bg-purple-600/20 border border-purple-500/50 text-purple-300 hover:bg-purple-600 hover:text-white px-3 py-2 rounded-xl text-xs font-bold transition ml-2";
+            addBtn.className = "admin-only bg-purple-600/20 border border-purple-500/50 text-purple-300 hover:bg-purple-600 hover:text-white px-3 py-2 rounded-xl text-xs font-bold transition ml-2";
             addBtn.onclick = () => openItemManager();
             tabContainer.appendChild(addBtn);
         }
@@ -1171,46 +1206,126 @@
             const imp = db[currentItem].find(i => i.id === impId);
             if(!imp) return;
             const printContainer = document.getElementById('printLayoutContainer');
-            const originalTitle = document.title;
-            const formattedFileName = `LC_${imp.lc.replace(/\s+/g, '_')}_BE_${imp.beNo.replace(/\s+/g, '_')}`;
-            document.title = formattedFileName;
-            const reportDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            let totImpPkt = imp.specs.reduce((sum, s) => sum + (s.pkt || 0), 0);
-            let totExpPkt = imp.exports.reduce((sum, e) => sum + e.pkt, 0);
-            let netPkt = totImpPkt - totExpPkt;
-            let htmlContent = `<div style="font-family: Arial, sans-serif; color: #000; padding: 10px; text-align: center;">
-                <h1 style="font-size: 20px; font-weight: bold; margin: 0; text-transform: uppercase;">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
-                <p style="font-size: 11px; margin: 5px 0;">Plot No: 49 & 50, Mongla EPZ, Mongla(9351), Bagerhat, Khulna, Bangladesh.</p>
-                <hr style="border: 1px solid #000;">
-                <p style="text-align:left;"><strong>Report for:</strong> ${currentItem} | <strong>LC:</strong> ${imp.lc} | <strong>B/E:</strong> ${imp.beNo} | <strong>Date:</strong> ${reportDate}</p>
-                <table style="width:100%; border-collapse: collapse; margin-top:10px;">
+            const printTime = new Date().toLocaleString('en-GB', { hour12: true, day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+            let htmlContent = `
+            <div style="font-family: Arial, sans-serif; color: #000; padding: 0; position: relative;">
+                <!-- PRINT BADGE AT TOP RIGHT -->
+                <div style="position: absolute; top: 0; right: 0; text-align: right;">
+                    <div style="display: inline-block; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 8px; padding: 6px 12px; font-family: sans-serif;">
+                        <p style="margin: 0; font-size: 8px; font-weight: bold; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Report Generated On</p>
+                        <p style="margin: 0; font-size: 10px; font-weight: bold; color: #111827;">${printTime}</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <h1 style="font-size: 22px; font-weight: bold; margin: 0; text-transform: uppercase;">HANSENG PAPER & ACCESSORIES IND. LTD.</h1>
+                    <p style="font-size: 11px; margin: 4px 0;">Plot No: 49 & 50, Mongla EPZ, Mongla(9351), Bagerhat, Khulna, Bangladesh.</p>
+                    <div style="border-bottom: 2px solid #000; margin: 15px 0;"></div>
+                    <h2 style="font-size: 16px; text-decoration: underline; margin-bottom: 20px; font-weight: bold; text-transform: uppercase;">Inventory Stock Ledger Report</h2>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 10px;">
+                    <div style="line-height: 1.6;">
+                        <strong>Item Name:</strong> ${currentItem} <br>
+                        <strong>Bill of Entry:</strong> ${imp.beNo} <br>
+                        <strong>B/E Date:</strong> ${imp.beDate}
+                    </div>
+                    <div style="line-height: 1.6; text-align: right;">
+                        <strong>LC Number:</strong> ${imp.lc} <br>
+                        <strong>In Bond:</strong> ${imp.inBond} (${imp.inBondDate || 'N/A'}) <br>
+                        <strong>Bank Name:</strong> ${imp.bank}
+                    </div>
+                </div>
+
+                <!-- SECTION 1: IMPORT SPECIFICATIONS -->
+                <h3 style="font-size: 12px; margin-bottom: 8px; text-transform: uppercase; border-left: 4px solid #000; padding-left: 8px;">1. Import Specifications</h3>
+                <table style="width:100%; border-collapse: collapse; margin-bottom: 25px;">
                     <thead>
-                        <tr style="background:#f0f0f0;">
-                            <th style="border:1px solid #000; padding:5px;">GSM</th>
-                            <th style="border:1px solid #000; padding:5px;">Size</th>
-                            <th style="border:1px solid #000; padding:5px;">Imp Weight</th>
-                            <th style="border:1px solid #000; padding:5px;">Exp Date</th>
-                            <th style="border:1px solid #000; padding:5px;">Truck No</th>
-                            <th style="border:1px solid #000; padding:5px;">Exp Weight</th>
+                        <tr style="background:#f1f5f9;">
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">GSM</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Size</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Sheet</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Pkt</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Roll</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Total Weight (kg)</th>
                         </tr>
                     </thead>
                     <tbody>`;
-            const rows = Math.max(imp.specs.length, imp.exports.length);
-            for(let i=0; i<rows; i++) {
-                let s = imp.specs[i], e = imp.exports[i];
+            
+            let totalImpWt = 0;
+            imp.specs.forEach(s => {
+                totalImpWt += s.weight;
                 htmlContent += `<tr>
-                    <td style="border:1px solid #000; padding:5px;">${s ? s.gsm : '-'}</td>
-                    <td style="border:1px solid #000; padding:5px;">${s ? s.size : '-'}</td>
-                    <td style="border:1px solid #000; padding:5px;">${s ? s.weight.toFixed(2) : '-'}</td>
-                    <td style="border:1px solid #000; padding:5px;">${e ? e.date : '-'}</td>
-                    <td style="border:1px solid #000; padding:5px;">${e ? e.truck : '-'}</td>
-                    <td style="border:1px solid #000; padding:5px;">${e ? e.weight.toFixed(2) : '-'}</td>
+                    <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${s.gsm}</td>
+                    <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${s.size}</td>
+                    <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${s.sheet}</td>
+                    <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${s.pkt}</td>
+                    <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${s.roll}</td>
+                    <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center; font-weight:bold;">${s.weight.toFixed(2)}</td>
                 </tr>`;
+            });
+            htmlContent += `</tbody></table>`;
+
+            // SECTION 2: EXPORT HISTORY
+            htmlContent += `
+                <h3 style="font-size: 12px; margin-bottom: 8px; text-transform: uppercase; border-left: 4px solid #000; padding-left: 8px;">2. Export History</h3>
+                <table style="width:100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background:#f1f5f9;">
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Date</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Truck No</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">GSM</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Size</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Pkt</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Export Weight (kg)</th>
+                            <th style="border:1px solid #000; padding:6px; font-size: 9px;">Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            let totalExpWt = 0;
+            if(imp.exports.length > 0) {
+                imp.exports.forEach(e => {
+                    totalExpWt += e.weight;
+                    htmlContent += `<tr>
+                        <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${e.date}</td>
+                        <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${e.truck}</td>
+                        <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${e.gsm}</td>
+                        <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${e.size}</td>
+                        <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center;">${e.pkt}</td>
+                        <td style="border:1px solid #000; padding:5px; font-size: 9px; text-align:center; font-weight:bold;">${e.weight.toFixed(2)}</td>
+                        <td style="border:1px solid #000; padding:5px; font-size: 9px;">${e.rent}</td>
+                    </tr>`;
+                });
+            } else {
+                htmlContent += `<tr><td colspan="7" style="border:1px solid #000; padding:10px; font-size: 9px; text-align:center; color:#555;">No Export Data Available</td></tr>`;
             }
-            htmlContent += `</tbody></table></div>`;
+
+            htmlContent += `
+                    </tbody>
+                    <tfoot>
+                        <tr style="background: #f8fafc; font-weight: bold;">
+                            <td colspan="5" style="border:1px solid #000; padding:8px; text-align: right; text-transform: uppercase; font-size: 10px;">Total Exported Weight:</td>
+                            <td style="border:1px solid #000; padding:8px; text-align:center; font-size: 10px;">${totalExpWt.toFixed(2)} kg</td>
+                            <td style="border:1px solid #000;"></td>
+                        </tr>
+                        <tr style="background: #e2e8f0; font-weight: 900;">
+                            <td colspan="5" style="border:1px solid #000; padding:10px; text-align: right; text-transform: uppercase; font-size: 11px;">Current Balance Net Stock:</td>
+                            <td style="border:1px solid #000; padding:10px; text-align:center; font-size: 11px;">${(totalImpWt - totalExpWt).toFixed(2)} kg</td>
+                            <td style="border:1px solid #000;"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div style="margin-top: 50px; display: flex; justify-content: space-between; font-size: 10px;">
+                    <div style="border-top: 1px solid #000; width: 180px; text-align: center; padding-top: 5px;">Warehouse Officer</div>
+                    <div style="border-top: 1px solid #000; width: 180px; text-align: center; padding-top: 5px;">Accounts Dept.</div>
+                    <div style="border-top: 1px solid #000; width: 180px; text-align: center; padding-top: 5px;">Authorized Signature</div>
+                </div>
+            </div>`;
+
             printContainer.innerHTML = htmlContent;
             window.print();
-            document.title = originalTitle;
             printContainer.innerHTML = "";
         }
 
@@ -1226,7 +1341,7 @@
                 <div><input type="number" placeholder="Pkt" value="${pkt}" required class="spec-pkt w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
                 <div><input type="number" placeholder="Roll" value="${roll}" required class="spec-roll w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
                 <div><input type="number" step="0.01" placeholder="Weight" value="${weight}" required class="spec-weight w-full bg-slate-950 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs"></div>
-                <div class="text-right"><button type="button" onclick="removeSpecificationRow('${rowId}')" class="text-red-400 hover:text-red-500 font-bold px-2 text-xs">❌ Delete</button></div>
+                <div class="text-right admin-only"><button type="button" onclick="removeSpecificationRow('${rowId}')" class="text-red-400 hover:text-red-500 font-bold px-2 text-xs">❌ Delete</button></div>
             `;
             container.appendChild(div);
         }
@@ -1316,7 +1431,7 @@
                     if(i === 0) {
                         tr.innerHTML += `
                             <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.sl}</td>
-                            <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.inBond}</td>
+                            <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.inBond}<br><span class="text-[9px] text-slate-500">${imp.inBondDate || ''}</span></td>
                             <td class="p-2 border-r border-slate-800 font-bold text-amber-400" rowspan="${totalRows}">${imp.beNo}</td>
                             <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.beDate}</td>
                             <td class="p-2 border-r border-slate-800" rowspan="${totalRows}">${imp.bank}</td>
@@ -1346,7 +1461,7 @@
                             <td class="p-2 border-r border-slate-800">${exp.ppw}</td>
                             <td class="p-2 border-r border-slate-800 font-bold text-orange-400">${exp.weight.toFixed(2)}</td>
                             <td class="p-2 border-r border-slate-800">${exp.rent}</td>
-                            <td class="p-2">
+                            <td class="admin-only p-2">
                                 <button onclick="editExport('${currentItem}', '${imp.id}', '${exp.id}')" class="text-blue-400 text-[10px]">✏️</button>
                                 <button onclick="deleteExport('${currentItem}', '${imp.id}', '${exp.id}')" class="text-red-400 text-[10px]">🗑️</button>
                             </td>
@@ -1356,7 +1471,7 @@
                     }
                     if(i === 0) {
                         tr.innerHTML += `
-                            <td class="p-2 space-y-1" rowspan="${totalRows}">
+                            <td class="admin-only p-2 space-y-1" rowspan="${totalRows}">
                                 <button onclick="editImport('${imp.id}')" class="text-blue-400 text-[10px] block w-full">Edit</button>
                                 <button onclick="deleteImport('${imp.id}')" class="text-red-400 text-[10px] block w-full">Del</button>
                             </td>
@@ -1390,7 +1505,9 @@
             }
             const newObj = {
                 id: id || "imp_" + Date.now(), sl: db[currentItem].length + 1,
-                inBond: document.getElementById('impInBond').value, beNo: document.getElementById('impBeNo').value,
+                inBond: document.getElementById('impInBond').value,
+                inBondDate: document.getElementById('impInBondDate').value,
+                beNo: document.getElementById('impBeNo').value,
                 beDate: document.getElementById('impBeDate').value, bank: document.getElementById('impBank').value,
                 lc: document.getElementById('impLc').value, ipNo: document.getElementById('impIpNo').value, ipDate: document.getElementById('impIpDate').value,
                 specs: specsArray,
@@ -1400,11 +1517,13 @@
             if(id) { const index = db[currentItem].findIndex(i => i.id === id); newObj.sl = db[currentItem][index].sl; db[currentItem][index] = newObj; } 
             else { db[currentItem].push(newObj); }
             saveToLocalStorage(); buildBeDropdown(); renderLedger(); closeModal('importModal');
+            if(!document.getElementById('bondRegisterModal').classList.contains('hidden')) renderBondRegisterTable();
         }
 
         function editImport(id) {
             const imp = db[currentItem].find(i => i.id === id);
             document.getElementById('editImportId').value = imp.id; document.getElementById('impInBond').value = imp.inBond;
+            document.getElementById('impInBondDate').value = imp.inBondDate || "";
             document.getElementById('impBeNo').value = imp.beNo; document.getElementById('impBeDate').value = imp.beDate;
             document.getElementById('impBank').value = imp.bank; document.getElementById('impLc').value = imp.lc;
             document.getElementById('impIpNo').value = imp.ipNo || ""; document.getElementById('impIpDate').value = imp.ipDate || "";
@@ -1418,6 +1537,7 @@
                 db[currentItem] = db[currentItem].filter(i => i.id !== id);
                 db[currentItem].forEach((item, index) => item.sl = index + 1);
                 saveToLocalStorage(); buildBeDropdown(); renderLedger();
+                if(!document.getElementById('bondRegisterModal').classList.contains('hidden')) renderBondRegisterTable();
             }
         }
 
@@ -1457,36 +1577,35 @@
         }
     </script>
     
-    <!-- AUTH & CLOUD Logic (Item manager, logout handling) -->
+    <!-- AUTH & CLOUD Logic -->
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAdKPpLeEg52FxbynMbLyiKQJJ7AgrkLqgQ4mwr7lIXnuFKfIOX530t3oRCasbtN4V/exec"; 
         let currentUserRole = null; 
 
         document.body.insertAdjacentHTML('afterbegin', `
             <div id="authOverlay" class="fixed inset-0 bg-slate-950 z-[9999] flex items-center justify-center p-4">
-                <div id="roleSelectionView" class="glass-card p-10 rounded-3xl w-full max-w-md border border-teal-500/20 text-center">
-                    <h1 class="text-3xl font-black text-teal-400 mb-2 uppercase">Factory Secure</h1>
+                <div id="roleSelectionView" class="glass-card p-6 md:p-10 rounded-3xl w-full max-w-md border border-teal-500/20 text-center">
+                    <h1 class="text-2xl md:text-3xl font-black text-teal-400 mb-2 uppercase">Factory Secure</h1>
                     <p class="text-slate-500 text-[10px] mb-8 uppercase">Global Ledger Synchronization</p>
                     <div class="grid grid-cols-1 gap-4">
-                        <button onclick="showLoginModal('admin')" class="bg-teal-600 hover:bg-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all text-xs uppercase">Admin Access</button>
-                        <button onclick="showLoginModal('user')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-4 rounded-xl shadow transition-all text-xs uppercase">User Mode</button>
+                        <button onclick="showLoginModal('admin')" class="bg-teal-600 hover:bg-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all text-xs uppercase tracking-widest">Admin Access</button>
+                        <button onclick="showLoginModal('user')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-4 rounded-xl shadow transition-all text-xs uppercase tracking-widest">Viewer Only</button>
                     </div>
                 </div>
-                <div id="adminLoginModal" class="hidden glass-card p-10 rounded-3xl w-full max-w-sm border border-red-500/30 text-center">
-                    <h2 class="text-xl font-bold text-red-400 mb-6 uppercase">Admin Authentication</h2>
-                    <input type="password" id="adminPassInput" placeholder="PIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-red-400 text-xl mb-4 focus:outline-none">
+                <div id="adminLoginModal" class="hidden glass-card p-6 md:p-10 rounded-3xl w-full max-sm border border-red-500/30 text-center">
+                    <h2 class="text-xl font-bold text-red-400 mb-6 uppercase">Admin Access</h2>
+                    <input type="password" id="adminPassInput" placeholder="PIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-red-400 text-xl mb-4 focus:outline-none focus:ring-2 focus:ring-red-500">
                     <button onclick="performLogin('admin')" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Login</button>
                 </div>
-                <div id="userLoginModal" class="hidden glass-card p-10 rounded-3xl w-full max-w-sm border border-teal-500/30 text-center">
-                    <h2 class="text-xl font-bold text-teal-400 mb-6 uppercase">User Authentication</h2>
-                    <input type="password" id="userPassInput" placeholder="PIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-teal-400 text-xl mb-4 focus:outline-none">
-                    <button onclick="performLogin('user')" class="w-full bg-teal-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Login</button>
+                <div id="userLoginModal" class="hidden glass-card p-6 md:p-10 rounded-3xl w-full max-sm border border-teal-500/30 text-center">
+                    <h2 class="text-xl font-bold text-teal-400 mb-6 uppercase">User Access</h2>
+                    <input type="password" id="userPassInput" placeholder="PIN" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-teal-400 text-xl mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <button onclick="performLogin('user')" class="w-full bg-teal-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Enter Dashboard</button>
                 </div>
             </div>
             <div id="syncLoader" class="fixed top-4 right-20 hidden bg-teal-600 text-white px-4 py-2 rounded-full text-[10px] font-bold animate-pulse z-[10000]">☁️ Syncing...</div>
         `);
 
-        // Logout placement fix
         document.getElementById('logoutPositioner').innerHTML = `
             <button onclick="handleLogout()" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-4 py-2 rounded-xl text-[10px] font-bold transition border border-red-500 uppercase tracking-widest">Logout</button>
         `;
@@ -1521,7 +1640,7 @@
                 currentUserRole = role; document.getElementById('authOverlay').remove();
                 await forceCloudFetch();
                 if (role === 'user') applyUserRestrictions();
-            } else { alert("Access Denied!"); }
+            } else { alert("Access Denied! Invalid PIN."); }
         }
 
         function handleLogout() { location.reload(); }
@@ -1579,11 +1698,26 @@
         }
 
         function applyUserRestrictions() {
-            const css = `button[onclick*="openImportModalNew"], button[onclick*="openExportModalNew"], button[onclick*="editImport"], button[onclick*="deleteImport"], button[onclick*="editExport"], button[onclick*="deleteExport"], button[onclick*="openManualBondExportModal"], button[onclick*="openItemManager"] { display: none !important; }`;
-            const style = document.createElement('style'); style.appendChild(document.createTextNode(css)); document.head.appendChild(style);
+            const css = `
+                .admin-only, 
+                button[onclick*="openImportModalNew"], 
+                button[onclick*="openExportModalNew"], 
+                button[onclick*="editImport"], 
+                button[onclick*="deleteImport"], 
+                button[onclick*="editExport"], 
+                button[onclick*="deleteExport"], 
+                button[onclick*="openManualBondExportModal"], 
+                button[onclick*="openItemManager"],
+                button[onclick*="editBondManualLog"],
+                button[onclick*="deleteBondManualLog"] { 
+                    display: none !important; 
+                }
+            `;
+            const style = document.createElement('style'); 
+            style.appendChild(document.createTextNode(css)); 
+            document.head.appendChild(style);
         }
 
-        // Updated LC Summary Logic Override to include Bond Balance Weight Column
         const baseRenderLcSummary = renderLcSummaryDashboard;
         renderLcSummaryDashboard = function() {
             const tbody = document.getElementById('lcSummaryBody'); const tfoot = document.getElementById('lcSummaryFoot');
@@ -1622,7 +1756,6 @@
                     let expWt = imp.exports.reduce((sum, e) => sum + e.weight, 0);
                     let balPkt = impPkt - expPkt; let balRoll = impRoll; let balWt = impWt - expWt;
 
-                    // Manual Bond Register Calculation Logic
                     let bondExpWt = (imp.bondLogs || []).reduce((sum, l) => sum + l.weight, 0);
                     let bondBalWt = impWt - bondExpWt;
 
