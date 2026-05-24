@@ -54,13 +54,13 @@
             .no-print, #logoutPositioner { display: none !important; }
             @page {
                 size: A4 landscape;
-                margin: 8mm 10mm 12mm 10mm;
+                margin: 0 !important; /* Removes browser headers and footers */
             }
             body {
                 background: #ffffff !important;
                 color: #000000 !important;
                 font-size: 9pt !important;
-                padding: 0 !important;
+                padding: 10mm !important; /* Adds inner margin for the content */
             }
             #printLayoutContainer {
                 display: block !important;
@@ -92,17 +92,19 @@
                 text-transform: uppercase;
             }
             
-            /* BOND REGISTER PRINT OVERRIDE */
+            /* BOND REGISTER PRINT FIX: Ensures content is visible and fills the page */
             body.printing-bond #bondRegisterPrintArea {
                 display: block !important;
                 visibility: visible !important;
-                position: absolute !important;
+                position: fixed !important;
                 left: 0 !important;
                 top: 0 !important;
-                width: 100% !important;
-                z-index: 9999 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                z-index: 99999 !important;
                 background: white !important;
                 color: black !important;
+                padding: 10mm !important;
             }
             body.printing-bond .max-w-\[1650px\], body.printing-bond .fixed, body.printing-bond #bondRegisterModal {
                 display: none !important;
@@ -939,11 +941,15 @@
             }
         }
 
+        /* UPDATED: PRINT BOND REGISTER TO REMOVE HEADERS/FOOTERS AND FIX VISIBILITY */
         function printBondRegister() {
+            const currentTitle = document.title;
+            document.title = ""; // Temporary clear title to remove it from print header
             document.body.classList.add('printing-bond');
             window.print();
             setTimeout(() => {
                 document.body.classList.remove('printing-bond');
+                document.title = currentTitle; // Restore title
             }, 500);
         }
 
@@ -1184,15 +1190,18 @@
             if(selectedImpId && selectedImpId !== "ALL") { generateBillOfEntryPDF(selectedImpId); }
         }
 
+        /* UPDATED: PDF GENERATION TO REMOVE HEADERS/FOOTERS */
         function generateBillOfEntryPDF(impId) {
             const imp = db[currentItem].find(i => i.id === impId);
             if(!imp) return;
             const printContainer = document.getElementById('printLayoutContainer');
             const printTime = new Date().toLocaleString('en-GB', { hour12: true, day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            
+            const currentTitle = document.title;
+            document.title = ""; // Clears site name from print header
 
             let htmlContent = `
             <div style="font-family: Arial, sans-serif; color: #000; padding: 0; position: relative;">
-                <!-- PRINT BADGE AT TOP RIGHT -->
                 <div style="position: absolute; top: 0; right: 0; text-align: right;">
                     <div style="display: inline-block; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 8px; padding: 6px 12px; font-family: sans-serif;">
                         <p style="margin: 0; font-size: 8px; font-weight: bold; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Report Generated On</p>
@@ -1220,7 +1229,6 @@
                     </div>
                 </div>
 
-                <!-- SECTION 1: IMPORT SPECIFICATIONS -->
                 <h3 style="font-size: 12px; margin-bottom: 8px; text-transform: uppercase; border-left: 4px solid #000; padding-left: 8px;">1. Import Specifications</h3>
                 <table style="width:100%; border-collapse: collapse; margin-bottom: 25px;">
                     <thead>
@@ -1249,7 +1257,6 @@
             });
             htmlContent += `</tbody></table>`;
 
-            // SECTION 2: EXPORT HISTORY
             htmlContent += `
                 <h3 style="font-size: 12px; margin-bottom: 8px; text-transform: uppercase; border-left: 4px solid #000; padding-left: 8px;">2. Export History</h3>
                 <table style="width:100%; border-collapse: collapse;">
@@ -1307,6 +1314,7 @@
             printContainer.innerHTML = htmlContent;
             window.print();
             printContainer.innerHTML = "";
+            document.title = currentTitle; // Restore site title
         }
 
         function addSpecificationRow(gsm='', size='', sheet='', pkt='', wstPkt='', roll='', weight='', wstWeight='') {
@@ -1594,12 +1602,12 @@
                 </div>
                 <div id="adminLoginModal" class="hidden glass-card p-6 md:p-10 rounded-3xl w-full max-sm border border-red-500/30 text-center">
                     <h2 class="text-xl font-bold text-red-400 mb-6 uppercase">Admin Access</h2>
-                    <input type="password" id="adminPassInput" placeholder="PIN" onkeydown="if(event.key==='Enter') performLogin('admin')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-red-400 text-xl mb-4 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <input type="password" id="adminPassInput" placeholder="PIN" onkeydown="if(event.key==='Enter') performLogin('admin')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-red-400 text-xl mb-4 focus:outline-none">
                     <button onclick="performLogin('admin')" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Login</button>
                 </div>
                 <div id="userLoginModal" class="hidden glass-card p-6 md:p-10 rounded-3xl w-full max-sm border border-teal-500/30 text-center">
                     <h2 class="text-xl font-bold text-teal-400 mb-6 uppercase">User Access</h2>
-                    <input type="password" id="userPassInput" placeholder="PIN" onkeydown="if(event.key==='Enter') performLogin('user')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-teal-400 text-xl mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <input type="password" id="userPassInput" placeholder="PIN" onkeydown="if(event.key==='Enter') performLogin('user')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-teal-400 text-xl mb-4 focus:outline-none">
                     <button onclick="performLogin('user')" class="w-full bg-teal-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] shadow-lg">Enter Dashboard</button>
                 </div>
             </div>
